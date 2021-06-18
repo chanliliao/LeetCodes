@@ -41,3 +41,39 @@ let missingNumber2 = (nums) => {
 };
 
 //console.log(missingNumber2([9,6,5,4,7,1,2,3,0]))
+
+// Question 190
+// Reverse bits of a given 32 bits unsigned integer.
+// Note:
+// Note that in some languages such as Java, there is no unsigned integer type. In this case, both input and output will be given as a signed integer type. They should not affect your implementation, as the integer's internal binary representation is the same, whether it is signed or unsigned.
+// In Java, the compiler represents the signed integers using 2's complement notation. Therefore, in Example 2 above, the input represents the signed integer -3 and the output represents the signed integer -1073741825.
+// Follow up:
+// If this function is called many times, how would you optimize it?
+// Example 1:
+// Input: n = 00000010100101000001111010011100
+// Output:    964176192 (00111001011110000010100101000000)
+// Explanation: The input binary string 00000010100101000001111010011100 represents the unsigned integer 43261596, so return 964176192 which its binary representation is 00111001011110000010100101000000.
+
+let reverseBits = (n) => {
+  return parseInt(
+    n.toString(2).padStart(32, '0').split('').reverse().join(''),
+    2
+  );
+};
+
+let reverseBits1 = (n) => {
+  let res = 0; //convert binary to decimal(32bit integer)
+  let index = 31; //32bit 0-31index
+  while (n > 0) {
+    //no num anymore
+    if (n % 2 != 0) {
+      //n's rightmost digit is 1 similar like n % 10 get rightmost digit
+      res += Math.pow(2, index); //reverse & convert to decimal at the same time
+    }
+    n = Math.floor(n / 2); //right shift  similar n/10 get rest of num exclude current digit
+    index--;
+  }
+  return res;
+};
+
+//console.log(reverseBits1('00000010100101000001111010011100'));
