@@ -38,7 +38,6 @@ let twoSum1 = (nums, target) => {
 // You are given an array prices where prices[i] is the price of a given stock on the ith day.
 // You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
 // Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
-
 // Example 1:
 // Input: prices = [7,1,5,3,6,4]
 // Output: 5
@@ -76,7 +75,7 @@ let maxProfit1 = (prices) => {
   return currentMaxProfit;
 };
 
-console.log(maxProfit1([7, 1, 5, 3, 6, 4]));
+// console.log(maxProfit1([7, 1, 5, 3, 6, 4]));
 
 //  Question 217
 //  Contains duplicate
@@ -152,3 +151,74 @@ let maxSubArray1 = (nums) => {
 };
 
 //console.log(maxSubArray1([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+
+// Q238
+// Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
+// The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+// You must write an algorithm that runs in O(n) time and without using the division operation.
+// Example 1:
+// Input: nums = [1,2,3,4]
+// Output: [24,12,8,6]
+// Example 2:
+// Input: nums = [-1,1,0,-3,3]
+// Output: [0,0,9,0,0]
+// Constraints:
+// 2 <= nums.length <= 105
+// -30 <= nums[i] <= 30
+// The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+// Follow up: Can you solve the problem in O(1) extra space complexity? (The output array does not count as extra space for space complexity analysis.)
+
+let productExceptSelf = (nums) => {
+  var output = [];
+  var leftMult = 1;
+  var rightMult = 1;
+  for (var i = nums.length - 1; i >= 0; i--) {
+    output[i] = rightMult;
+    rightMult *= nums[i];
+  }
+  for (var j = 0; j < nums.length; j++) {
+    output[j] *= leftMult;
+    leftMult *= nums[j];
+  }
+  return output;
+};
+
+let productExceptSelf1 = (nums) => {
+  // map and reduce
+  return nums.map(function (curr, i, arr) {
+    let temp = arr.slice();
+    temp.splice(i, 1);
+    return temp.reduce((product = 1, num) => product * num);
+  });
+};
+
+let productExceptSelf2 = (nums) => {
+  // O(1) space
+  let result = [1],
+    right = 1;
+  for (let i = 1; i < nums.length; i++) {
+    result.push(result[i - 1] * nums[i - 1]);
+  }
+
+  for (let i = nums.length - 1; i >= 0; i--) {
+    result[i] = result[i] * right;
+    right *= nums[i];
+  }
+  return result;
+};
+
+let productExceptSelf3 = (nums) => {
+  // recursive
+  function recurseProd(i = 0, leftProd = 1) {
+    if (i >= nums.length) return 1;
+    const rightProd = recurseProd(i + 1, nums[i] * leftProd);
+    const tmp = nums[i];
+    nums[i] = leftProd * rightProd;
+    return rightProd * tmp;
+  }
+
+  recurseProd(0, 1);
+  return nums;
+};
+
+console.log(productExceptSelf([1, 2, 3, 4]));
