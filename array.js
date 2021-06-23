@@ -305,7 +305,7 @@ let findMin = (nums) => {
   return nums[left];
 };
 
-console.log(findMin([3, 4, 5, 1, 2]));
+// console.log(findMin([3, 4, 5, 1, 2]));
 
 // Q33
 // Search in Rotated Sorted Array
@@ -368,4 +368,119 @@ let search = (nums, target) => {
   return -1;
 };
 
-console.log(search([4, 5, 6, 7, 0, 1, 2, 3], 0));
+// console.log(search([4, 5, 6, 7, 0, 1, 2, 3], 0));
+
+// Q15
+// 3Sum
+// Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+// Notice that the solution set must not contain duplicate triplets.
+// Example 1:
+// Input: nums = [-1,0,1,2,-1,-4]
+// Output: [[-1,-1,2],[-1,0,1]]
+// Example 2:
+// Input: nums = []
+// Output: []
+// Example 3:
+// Input: nums = [0]
+// Output: []
+// Constraints:
+// 0 <= nums.length <= 3000
+// -105 <= nums[i] <= 105
+
+let threeSum = (nums) => {
+  const result = [];
+  let target = 0;
+
+  // we need 3 values for this to work
+  // so return an empty array if we have less than 3
+  if (nums.length < 3) {
+    return result;
+  }
+
+  // sorting is ok because the function is already O(n^2)
+  // and sort is O(nlogn)
+  // this also lets us stop iterating once weve passed the target value
+  nums = nums.sort((a, b) => a - b);
+
+  // well use i as our anchor as we move through the array
+  // we stop at nums.length - 2 to prevent undefined for k
+  for (let i = 0; i < nums.length - 2; i++) {
+    // because we sorted the array already
+    // we can stop here if the current iterator is greater than the target value
+    if (nums[i] > target) {
+      break;
+    }
+
+    // if our iterator is the same as the previous value
+    // skip it to prevent duplicate results
+    if (i > 0 && nums[i] === nums[i - 1]) {
+      continue;
+    }
+
+    // start j at i + 1
+    let j = i + 1;
+
+    // start k at end of array
+    let k = nums.length - 1;
+
+    // walking j and k towards each other to find all possible values
+    // with i as our anchor value
+    while (j < k) {
+      let sum = nums[i] + nums[j] + nums[k];
+      if (sum === target) {
+        result.push([nums[i], nums[j], nums[k]]);
+
+        // skip duplicate values of j and k
+        while (nums[j] === nums[j + 1]) j++;
+        while (nums[k] === nums[k - 1]) k--;
+
+        // move j and k inward
+        j++;
+        k--;
+        continue;
+      }
+      if (sum < target) {
+        j++;
+        continue;
+      }
+      if (sum > target) {
+        k--;
+        continue;
+      }
+    }
+  }
+  return result;
+};
+
+// console.log(threeSum([-1, 0, 1, 2, -1, 4]));
+
+// Q11
+// Container with Most Water
+// Given n non-negative integers a1, a2, ..., an , where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of the line i is at (i, ai) and (i, 0). Find two lines, which, together with the x-axis forms a container, such that the container contains the most water.
+// Notice that you may not slant the container.
+// Example 1:
+// Input: height = [1,8,6,2,5,4,8,3,7]
+// Output: 49
+// Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+// Example 2:
+// Input: height = [1,1]
+// Output: 1
+// Example 3:
+// Input: height = [4,3,2,1,4]
+// Output: 16
+// Example 4:
+// Input: height = [1,2,1]
+// Output: 2
+
+let maxArea = (height) => {
+  let ans = 0,
+    i = 0,
+    j = height.length - 1;
+  while (i < j) {
+    ans = Math.max(ans, Math.min(height[i], height[j]) * (j - i));
+    height[i] <= height[j] ? i++ : j--;
+  }
+  return ans;
+};
+
+console.log(maxArea([1, 8, 6, 2, 5, 4, 8, 3, 7]));
