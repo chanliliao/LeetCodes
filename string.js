@@ -266,3 +266,5 @@ let isPalindrome7 = (s) => {
 };
 
 console.log(isPalindrome7('Aa man, a plan, a canal: Panama'));
+
+// Q3
