@@ -26,7 +26,7 @@ const isAnagram2 = (s, t) => {
   return newS === newT ? true : false;
 };
 
-console.log(isAnagram1('abbbc', 'babbb'));
+// console.log(isAnagram1('abbbc', 'babbb'));
 
 // Question 20
 // Valid Parentheses
@@ -265,6 +265,91 @@ let isPalindrome7 = (s) => {
   }
 };
 
-console.log(isPalindrome7('Aa man, a plan, a canal: Panama'));
+// console.log(isPalindrome7('Aa man, a plan, a canal: Panama'));
 
 // Q3
+// Longest Substring Without Repeating Characters
+// Given a string s, find the length of the longest substring without repeating characters.
+// Example 1:
+// Input: s = "abcabcbb"
+// Output: 3
+// Explanation: The answer is "abc", with the length of 3.
+// Example 2:
+// Input: s = "bbbbb"
+// Output: 1
+// Explanation: The answer is "b", with the length of 1.
+// Example 3:
+// Input: s = "pwwkew"
+// Output: 3
+// Explanation: The answer is "wke", with the length of 3.
+// Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+// Example 4:
+// Input: s = ""
+// Output: 0
+// Constraints:
+// 0 <= s.length <= 5 * 104
+// s consists of English letters, digits, symbols and spaces.
+
+let lenOfLongestSub = (s) => {
+  // no map or set
+  var sLen = s.length,
+    maxLen = 0,
+    maxStr = '',
+    tmpStr,
+    posIndex,
+    i;
+
+  for (i = 0; i < sLen; i++) {
+    tmpStr = s[i];
+    posIndex = maxStr.indexOf(tmpStr);
+
+    if (posIndex > -1) {
+      maxStr = maxStr.substring(posIndex + 1);
+    }
+
+    maxStr += tmpStr;
+    maxLen = Math.max(maxLen, maxStr.length);
+  }
+
+  return maxLen;
+};
+
+let lenOfLongestSub1 = (s) => {
+  //set = sliding window
+  let seen = new Set();
+  let longest = 0;
+  let l = 0;
+  for (let r = 0; r < s.length; r++) {
+    while (seen.has(s[r])) {
+      seen.delete(s[l]);
+      l++;
+    }
+    seen.add(s[r]);
+    longest = Math.max(longest, r - l + 1);
+  }
+  return longest;
+};
+
+// console.log(lenOfLongestSub(abcabcbb));
+
+let reverseArray = (a) => {
+  let arr = [...new Array(n)].map((x) => []);
+  let lastAnswer = 0;
+  let ans = [];
+  queries.forEach((v) => {
+    let idx = (v[1] ^ lastAnswer) % n;
+    switch (v[0]) {
+      case 1:
+        arr[idx].push(v[2]);
+        break;
+      case 2:
+        lastAnswer = arr[idx][v[2] % arr[idx].length];
+        ans.push(lastAnswer);
+        break;
+      default:
+    }
+  });
+  return ans;
+};
+
+console.log(reverseArray([1, 4, 3, 2]));
