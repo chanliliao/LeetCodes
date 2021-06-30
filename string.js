@@ -45,27 +45,36 @@ const isAnagram2 = (s, t) => {
 // Output: false
 
 let isValid = (s) => {
-  const stack = [];
-  const map = {
-    '(': ')',
-    '[': ']',
-    '{': '}',
-  };
+  // const stack = [];
+  // const map = {
+  //   '(': ')',
+  //   '[': ']',
+  //   '{': '}',
+  // };
 
-  for (let i = 0; i < s.length; i++) {
-    let c = s[i];
-    if (map[c]) {
-      stack.push(map[c]);
-      console.log(stack);
-    } else if (c !== stack.pop()) {
-      return false;
-    }
+  // for (let i = 0; i < s.length; i++) {
+  //   let c = s[i];
+  //   if (map[c]) {
+  //     stack.push(map[c]);
+  //   } else if (c !== stack.pop()) {
+  //     return false;
+  //   }
+  // }
+
+  // return !stack.length;
+
+  let n = -1;
+  while (s.length != n) {
+    n = s.length;
+    s = s.replace('()', '');
+    s = s.replace('[]', '');
+    s = s.replace('{}', '');
   }
-
-  return !stack.length;
+  if (s.length == 0) return 'YES';
+  else return 'NO';
 };
 
-//console.log(isValid('(}'));
+// console.log(isValid('{()()}'));
 
 //Question 125
 //Valid Palindrome
@@ -332,24 +341,26 @@ let lenOfLongestSub1 = (s) => {
 
 // console.log(lenOfLongestSub(abcabcbb));
 
-let reverseArray = (a) => {
-  let arr = [...new Array(n)].map((x) => []);
-  let lastAnswer = 0;
-  let ans = [];
-  queries.forEach((v) => {
-    let idx = (v[1] ^ lastAnswer) % n;
-    switch (v[0]) {
-      case 1:
-        arr[idx].push(v[2]);
-        break;
-      case 2:
-        lastAnswer = arr[idx][v[2] % arr[idx].length];
-        ans.push(lastAnswer);
-        break;
-      default:
+let reverseArray = (h) => {
+  let answer = 0;
+  const n = h.length;
+
+  for (let c = 0; c < n; c++) {
+    let l = c,
+      r = c;
+    while (l >= 0 && h[l] >= h[c]) {
+      l--;
     }
-  });
-  return ans;
+    while (r <= n && h[r] >= h[c]) {
+      r++;
+    }
+    console.log('l: ' + l);
+    console.log('r: ' + r);
+    answer = Math.max((r - (l + 1)) * h[c], answer);
+    console.log('a: ' + answer);
+  }
+
+  return answer;
 };
 
-console.log(reverseArray([1, 4, 3, 2]));
+console.log(reverseArray([8, 4, 6, 5, 7, 3, 5, 7, 2, 2]));

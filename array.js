@@ -484,3 +484,21 @@ let maxArea = (height) => {
 };
 
 console.log(maxArea([1, 8, 6, 2, 5, 4, 8, 3, 7]));
+
+// hacker rank questions
+// Reverse Array
+
+function reverseArray(a) {
+  // Write your code here
+  if (a.length < 2) return a;
+
+  let ans = [];
+  for (let i = a.length - 1; i > -1; i--) {
+    ans.push(a[i]);
+  }
+  return ans;
+}
+
+console.log(reverseArray([1, 8, 6, 2, 5, 4, 8, 3, 7]));
+
+//
