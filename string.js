@@ -340,27 +340,20 @@ let lenOfLongestSub1 = (s) => {
 };
 
 // console.log(lenOfLongestSub(abcabcbb));
-
-let reverseArray = (h) => {
-  let answer = 0;
-  const n = h.length;
-
-  for (let c = 0; c < n; c++) {
-    let l = c,
-      r = c;
-    while (l >= 0 && h[l] >= h[c]) {
-      l--;
+const precomputed = [0, 1, 2, 3];
+let reverseArray = (n) => {
+  while (n >= precomputed.length) {
+    const x = precomputed.length;
+    const sqrt = Math.floor(Math.sqrt(x));
+    let min = precomputed[x - 1];
+    for (let i = 2; i <= sqrt; i++) {
+      if (x % i === 0) {
+        min = Math.min(min, precomputed[x / i]);
+      }
     }
-    while (r <= n && h[r] >= h[c]) {
-      r++;
-    }
-    console.log('l: ' + l);
-    console.log('r: ' + r);
-    answer = Math.max((r - (l + 1)) * h[c], answer);
-    console.log('a: ' + answer);
+    precomputed.push(1 + min);
   }
-
-  return answer;
+  return precomputed[n];
 };
 
-console.log(reverseArray([8, 4, 6, 5, 7, 3, 5, 7, 2, 2]));
+console.log(reverseArray(6));
