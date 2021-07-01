@@ -501,4 +501,37 @@ function reverseArray(a) {
 
 console.log(reverseArray([1, 8, 6, 2, 5, 4, 8, 3, 7]));
 
-//
+//Hourglass sum
+let hourglassSum = (arr)=> {
+  // Write your code here
+  let max = -64
+  for(let x = 0; x<4;x++){
+      for(let y = 0; y<4;y++){
+           let sum = arr[x][y] +arr[x][y+1]+arr[x][y+2]+arr[x+1][y+1]+arr[x+2][y]+arr[x+2][y+1]+arr[x+2][y+2]
+           if(sum > max){max= sum}
+      }
+      
+  }
+  return max
+}
+
+// DynamicArray
+let dynamicArray = (n, queries) => {
+  // Write your code here
+let arr = [...new Array(n)].map(x => []);
+  let lastAnswer = 0;
+  let ans = [];
+  queries.forEach(v => {
+      let idx = (v[1] ^ lastAnswer) % n;
+      switch (v[0]) {
+          case 1:
+              arr[idx].push(v[2]);
+              break;
+          case 2: lastAnswer = arr[idx][v[2] % arr[idx].length];
+              ans.push(lastAnswer);
+              break;
+          default:
+      }
+  });
+  return ans;
+}

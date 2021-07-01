@@ -340,6 +340,7 @@ let lenOfLongestSub1 = (s) => {
 };
 
 // console.log(lenOfLongestSub(abcabcbb));
+
 const precomputed = [0, 1, 2, 3];
 let reverseArray = (n) => {
   while (n >= precomputed.length) {
