@@ -140,7 +140,7 @@ function isEqual(root1, root2) {
 }
 
 // Q235
-// LCA of a BST
+// LCA of a BSTc
 
 // iterative
 var lowestCommonAncestor = function (root, p, q) {
@@ -165,4 +165,77 @@ var lowestCommonAncestor = function (root, p, q) {
     return lowestCommonAncestor(root.left, p, q);
   }
   return root;
+};
+
+// Q102
+// binary tree level order traversal
+
+// recursive
+function levelOrder(root, level = 0, result = []) {
+  if (root) {
+    // init subarray if it doesn't exist
+    let arr = (result[level] = result[level] || []);
+    arr.push(root.val);
+
+    levelOrder(root.left, level + 1, result);
+    levelOrder(root.right, level + 1, result);
+  }
+  return result;
+}
+
+// iterative
+var levelOrder = function (root) {
+  let q = [root],
+    ans = [];
+  while (q[0]) {
+    let qlen = q.length,
+      row = [];
+    for (let i = 0; i < qlen; i++) {
+      let curr = q.shift();
+      row.push(curr.val);
+      if (curr.left) q.push(curr.left);
+      if (curr.right) q.push(curr.right);
+    }
+    ans.push(row);
+  }
+  return ans;
+};
+
+// Q105
+//binary tree from preorder to inorder traversal
+
+// iterative
+var isValidBST = function (root) {
+  let stack = [];
+  let inorder = Number.NEGATIVE_INFINITY;
+
+  while (stack.length > 0 || root != null) {
+    while (root != null) {
+      stack.push(root);
+      root = root.left;
+    }
+
+    root = stack.pop();
+
+    // if next element in inorder traversal
+    // is smaller than the previous one
+    // that's not BST
+
+    if (root.val <= inorder) {
+      return false;
+    }
+
+    inorder = root.val;
+    root = root.right;
+  }
+
+  return true;
+};
+
+// recurve
+var isValidBST = function (root, min = null, max = null) {
+  if (!root) return true;
+  if (min && root.val <= min.val) return false;
+  if (max && root.val >= max.val) return false;
+  return isValidBST(root.left, min, root) && isValidBST(root.right, root, max);
 };
