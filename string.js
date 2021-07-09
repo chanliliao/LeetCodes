@@ -358,3 +358,143 @@ let reverseArray = (n) => {
 };
 
 console.log(reverseArray(6));
+
+// Q5
+// Longest Palindromic substring
+// Given a string s, return the longest palindromic substring in s.
+// Example 1:
+// Input: s = "babad"
+// Output: "bab"
+// Note: "aba" is also a valid answer.
+// Example 2:
+// Input: s = "cbbd"
+// Output: "bb"
+// Example 3:
+// Input: s = "a"
+// Output: "a"
+// Example 4:
+// Input: s = "ac"
+// Output: "a"
+// Constraints:
+// 1 <= s.length <= 1000
+// s consist of only digits and English letters (lower-case and/or upper-case),
+
+let longestPalindrome = (s) => {
+  var max = '';
+  for (var i = 0; i < s.length; i++) {
+    for (var j = 0; j < 2; j++) {
+      var left = i;
+      var right = i + j;
+      while (s[left] && s[left] === s[right]) {
+        left--;
+        right++;
+      }
+      if (right - left - 1 > max.length) {
+        max = s.substring(left + 1, right);
+      }
+    }
+  }
+  return max;
+};
+
+let longestPalindrome = (s) => {
+  // using bubble sort
+  let maxPal = '';
+
+  for (let i = 0; i < s.length; i++) {
+    bubble(i, i); // odd palindrome
+    bubble(i, i + 1); // even palindrome
+  }
+
+  function bubble(left, right) {
+    while (left >= 0 && s[left] === s[right]) {
+      left--;
+      right++;
+    }
+    left++;
+    right--;
+
+    if (maxPal.length < right - left + 1) {
+      maxPal = s.slice(left, right + 1);
+    }
+  }
+  return maxPal;
+};
+
+console.log(longestPalindrome('babad'));
+
+// Q49
+// Group Anagrams
+// Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+// An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+// Example 1:
+// Input: strs = ["eat","tea","tan","ate","nat","bat"]
+// Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+// Example 2:
+// Input: strs = [""]
+// Output: [[""]]
+// Example 3:
+// Input: strs = ["a"]
+// Output: [["a"]]
+
+var groupAnagrams = function (strs) {
+  let obj = {};
+  for (let str of strs) {
+    let letters = str.split('').sort().join('');
+    obj[letters] ? obj[letters].push(str) : (obj[letters] = [str]);
+  }
+  return Object.values(obj);
+};
+// Time Complexity: O(n*klog(k)) where n is the length of input array and k is the maximum length of a string in input array
+// Space Complexity: O(n)
+
+var groupAnagrams = function (strs) {
+  let m = new Map();
+  for (let str of strs) {
+    let sorted = str.split('').sort().join('');
+    if (m.has(sorted)) m.set(sorted, [...m.get(sorted), str]);
+    else m.set(sorted, [str]);
+  }
+  return Array.from(m.values());
+};
+
+// Time Complexity: O(n*klog(k)) where n is the length of input array and k is the maximum length of a string in input array
+// Space Complexity: O(n)
+
+var groupAnagrams = function (strs) {
+  let res = {};
+  for (let str of strs) {
+    let count = new Array(26).fill(0);
+    for (let char of str) count[char.charCodeAt() - 97]++;
+    let key = count.join('#');
+    res[key] ? res[key].push(str) : (res[key] = [str]);
+  }
+  return Object.values(res);
+};
+// Time Complexity: O(n*k) where n is the size of input array and k is the maximum length of string in input array
+// Space Complexity: O(n)
+
+/**
+ * @param {string[]} strs
+ * @return {string[][]}
+ *
+ * key point:
+ * prime multiply prime is unique, each char canbe represented by a prime
+ * since [a-z] to  [0-25]
+ * use `[charCodeAt() - 97]` to get unique index from the prime array
+ * the prodcut can be set to the key name "prod"
+ **/
+var groupAnagrams = function (strs) {
+  const map = {};
+  const primes = [
+    2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
+    73, 79, 83, 89, 97, 101,
+  ];
+  strs.forEach((str) => {
+    let prod = str
+      .split('')
+      .reduce((r, c) => r * primes[c.charCodeAt() - 97], 1);
+    map[prod] ? map[prod].push(str) : (map[prod] = [str]);
+  });
+  return Object.values(map);
+};
