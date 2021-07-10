@@ -498,3 +498,103 @@ var groupAnagrams = function (strs) {
   });
   return Object.values(map);
 };
+
+// 424
+//  Longest Repeating Character Replacement
+
+// Maintain left and right pointer, max instances of a single char, and visit counts for each char.
+// for each char in string
+// increment visit count for this char
+// if new visit count is higher than max, update max
+// if length of current string without max char count is greater than k,
+// then we know the new char made it such that there are more chars missing than can be replaced by k,
+// so we will remove the first char
+// and increment left pointer
+// increment right pointer to look at next char.
+// In the end, the answer is whatever the window size is. This is because we never shrink the window size.
+// As we look at new chars, we increase the window size.
+// Once we see we can no longer increase due to limitation of k, we slide the window forward.
+// In these inbetween states, it's possible the window doesn't span a valid subset,
+// but that doesn't matter because the window size at one point did span a valid set.
+// Instead, we wait until there's a possibility of a better set, which is when there is a substring with more instances of some char.
+const characterReplacement = (s, k) => {
+  let left = 0;
+  let right = 0;
+  let maxCharCount = 0;
+  const visited = {};
+
+  while (right < s.length) {
+    const char = s[right];
+    visited[char] = visited[char] ? visited[char] + 1 : 1;
+
+    if (visited[char] > maxCharCount) maxCharCount = visited[char];
+
+    if (right - left + 1 - maxCharCount > k) {
+      visited[s[left]]--;
+      left++;
+    }
+
+    right++;
+  }
+
+  return right - left;
+};
+
+// Q76
+// Minimum Window Substring
+// Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
+// The testcases will be generated such that the answer is unique.
+// A substring is a contiguous sequence of characters within the string.
+// Example 1:
+// Input: s = "ADOBECODEBANC", t = "ABC"
+// Output: "BANC"
+// Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+// Example 2:
+// Input: s = "a", t = "a"
+// Output: "a"
+// Explanation: The entire string s is the minimum window.
+// Example 3:
+// Input: s = "a", t = "aa"
+// Output: ""
+// Explanation: Both 'a's from t must be included in the window.
+// Since the largest window of s only has one 'a', return empty string.
+
+// sliding window
+var minWindow = function (s, t) {
+  let m = new Map();
+  for (let i = 0; i < t.length; i++) {
+    m.set(t[i], m.get(t[i]) + 1 || 1);
+  }
+  let start = 0,
+    end = 0;
+  let minStart = null,
+    minEnd = null;
+  let uniqueChars = m.size; // # of unique characters in t
+  while (end < s.length) {
+    if (m.has(s[end])) {
+      m.set(s[end], m.get(s[end]) - 1);
+      // unique chars to collect decrements by 1
+      if (m.get(s[end]) === 0) {
+        uniqueChars -= 1;
+      }
+    }
+    while (uniqueChars === 0 && start <= end) {
+      if (minStart === null || minEnd - minStart > end - start) {
+        minStart = start;
+        minEnd = end;
+      }
+      if (m.has(s[start])) {
+        m.set(s[start], m.get(s[start]) + 1);
+        // unique chars to collect increments by 1
+        if (m.get(s[start]) === 1) {
+          uniqueChars += 1;
+        }
+      }
+      start++;
+    }
+    end++;
+  }
+  return minStart === null ? '' : s.substring(minStart, minEnd + 1);
+  // T.C: O(N)
+  // S.C: O(N)
+};
