@@ -154,10 +154,27 @@ var lowestCommonAncestor = function (root, p, q) {
     }
   }
   return root;
+  while (root) {
+    if (root.val < p.val && root.val < q.val) {
+      root = root.right;
+    } else if (root.val > p.val && root.val > q.val) {
+      root = root.left;
+    } else {
+      break;
+    }
+  }
+  return root;
 };
 
 // recursive
 var lowestCommonAncestor = function (root, p, q) {
+  if (root.val < p.val && root.val < q.val) {
+    return lowestCommonAncestor(root.right, p, q);
+  }
+  if (root.val > p.val && root.val > q.val) {
+    return lowestCommonAncestor(root.left, p, q);
+  }
+  return root;
   if (root.val < p.val && root.val < q.val) {
     return lowestCommonAncestor(root.right, p, q);
   }
