@@ -281,3 +281,31 @@ var isValidBST = function (root, min = null, max = null) {
   if (max && root.val >= max.val) return false;
   return isValidBST(root.left, min, root) && isValidBST(root.right, root, max);
 };
+
+// Q 230.
+// Kth Smallest Element in a BST
+
+// recurve
+var kthSmallest = function (root, k) {
+  let treeStack = [];
+
+  traverse(root);
+
+  if (treeStack.length < k) {
+    return null;
+  } else {
+    return treeStack[k - 1];
+  }
+
+  function traverse(root) {
+    if (root.left) {
+      traverse(root.left);
+    }
+
+    treeStack.push(root.val);
+
+    if (root.right) {
+      traverse(root.right);
+    }
+  }
+};
