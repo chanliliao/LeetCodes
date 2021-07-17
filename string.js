@@ -598,3 +598,51 @@ var minWindow = function (s, t) {
   // T.C: O(N)
   // S.C: O(N)
 };
+
+// Question 344
+// Reverse String
+// Write a function that reverses a string. The input string is given as an array of characters char[].
+// Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
+// You may assume all the characters consist of printable ascii characters.
+//
+// example:
+// Input: ["h","e","l","l","o"]
+// Output: ["o","l","l","e","h"]
+
+const reverseString1 = (s) => {
+  for (let a = 0, b = s.length - 1; a < s.length / 2; a++, b--) {
+    // typical swaping code
+    let temp = s[a];
+    s[a] = s[b];
+    s[b] = temp;
+  }
+  return s;
+};
+const reverseString2 = (s) => {
+  for (let a = 0, b = s.length - 1; a < s.length / 2; a++, b--) {
+    // es6
+    [s[a], s[b]] = [s[b], s[a]];
+  }
+  return s;
+};
+
+const reverseString3 = (s) => {
+  // string function
+  return s.reverse();
+};
+
+const reverseString4 = (s) => {
+  // recursion
+  return Helper(0, s.length - 1);
+
+  function Helper(l, r) {
+    if (l >= r) return s;
+    let temp = s[r];
+    s[r] = s[l];
+    s[l] = temp;
+
+    return Helper(l + 1, r - 1);
+  }
+};
+
+console.log(reverseString4(['h', 'e', 'l', 'l', 'o']));
