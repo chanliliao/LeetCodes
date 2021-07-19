@@ -276,6 +276,231 @@ let isPalindrome7 = (s) => {
 
 // console.log(isPalindrome7('Aa man, a plan, a canal: Panama'));
 
+// Q1108
+// Defanging an IP Address
+// Given a valid (IPv4) IP address, return a defanged version of that IP address.
+// A defanged IP address replaces every period "." with "[.]".
+// Example 1:
+// Input: address = "1.1.1.1"
+// Output: "1[.]1[.]1[.]1"
+// Example 2:
+// Input: address = "255.100.50.0"
+// Output: "255[.]100[.]50[.]0"
+
+// normal
+var defangIPaddr = function (address) {
+  var result = '';
+
+  for (var i = 0; i < address.length; i++) {
+    if (address[i] === '.') result += '[.]';
+    else result += address[i];
+  }
+
+  return result;
+};
+
+// built in string function
+var defangIPaddr = function (address) {
+  return address.split('.').join('[.]');
+};
+
+// regex
+var defangIPaddr = function (address) {
+  return address.replace(/\./g, '[.]');
+};
+
+//Q953
+//  Verifyinh an Aliean dictionary
+// In an alien language, surprisingly they also use english lowercase letters, but possibly in a different order. The order of the alphabet is some permutation of lowercase letters.
+// Given a sequence of words written in the alien language, and the order of the alphabet, return true if and only if the given words are sorted lexicographicaly in this alien language.
+// Example 1:
+// Input: words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
+// Output: true
+// Explanation: As 'h' comes before 'l' in this language, then the sequence is sorted.
+// Example 2:
+// Input: words = ["word","world","row"], order = "worldabcefghijkmnpqstuvxyz"
+// Output: false
+// Explanation: As 'd' comes after 'l' in this language, then words[0] > words[1], hence the sequence is unsorted.
+// Example 3:
+// Input: words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
+// Output: false
+// Explanation: The first three characters "app" match, and the second string is shorter (in size.) According to lexicographical rules "apple" > "app", because 'l' > '∅', where '∅' is defined as the blank character which is less than any other character (More info).
+
+var isAlienSorted = function (W, O) {
+  //   The naive approach here would be to iterate through pairs of consecutive words in our input array (W) and compare the position of each letter in the input alphabet (O), moving letter by letter until we find a discrepancy and can determine which word comes first lexicographically.
+
+  // As this is an Easy question, this method works, but with a time complexity of O(N * M * P) where N is the length of W, M is the average length of each word in W, and P is the length of O.
+
+  // Rather than repetitively finding the position of a character in O, however, we can create a lookup table of indexes from O (alpha) at a time complexity of O(P) and turn every position lookup into a simple O(1) operation. That changes the overall time complexity to O(N * M + P).
+
+  // Then, as noted before, we can just iterate through word pairs (a, b) in W, then iterate through comparative characters (achar, bchar) in those two words and evaluate them based on their lexicographical indexes (aix, bix).
+
+  // If aix < bix or if we reach the end of a, then the two words are in correct lexicographical order and we should move to the next pair of words. If aix > bix or if we reach the end of b, the two words are not in correct lexicographical order and we should return false.
+
+  // If we reach the end without exiting, we should return true.
+  let alpha = new Map([['', -1]]);
+  for (let i = 0; i < O.length; i++) alpha.set(O.charAt(i), i);
+  for (let i = 1; i < W.length; i++) {
+    let a = W[i - 1],
+      b = W[i];
+    for (let j = 0; j < a.length; j++) {
+      let achar = a.charAt(j),
+        bchar = b.charAt(j),
+        aix = alpha.get(achar),
+        bix = alpha.get(bchar);
+      if (aix < bix) break;
+      if (aix > bix) return false;
+    }
+  }
+  return true;
+};
+
+// Q917
+// Reverse only string
+// Given a string s, return the "reversed" string where all characters that are not a letter stay in the same place, and all letters reverse their positions.
+// Example 1:
+// Input: s = "ab-cd"
+// Output: "dc-ba"
+// Example 2:
+// Input: s = "a-bC-dEf-ghIj"
+// Output: "j-Ih-gfE-dCba"
+// Example 3:
+// Input: s = "Test1ng-Leet=code-Q!"
+// Output: "Qedo1ct-eeLg=ntse-T!"
+
+// (A <= char <= Z) || (a <= char <= z)
+var isLetter = function (c) {
+  return (c >= 65 && c <= 90) || (c >= 97 && c <= 122);
+};
+
+var swap = function (array, a, b) {
+  let t = array[a];
+  array[a] = array[b];
+  array[b] = t;
+};
+
+var reverseOnlyLetters = function (S) {
+  var result = S.split('');
+  let l = 0;
+  let r = result.length - 1;
+
+  while (l < r) {
+    if (!isLetter(result[l].charCodeAt())) {
+      l++;
+    } else if (!isLetter(result[r].charCodeAt())) {
+      r--;
+    } else {
+      swap(result, l++, r--);
+    }
+  }
+
+  return result.join('');
+};
+
+// time O(n * m) space O(1)
+var reverseOnlyLetters = function (S) {
+  const array = S.split('');
+  const alphabets = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let start = 0;
+  let end = S.length - 1;
+
+  while (start < end) {
+    while (!alphabets.includes(array[start]) && start < end) {
+      start++;
+    }
+    while (!alphabets.includes(array[end]) && start < end) {
+      end--;
+    }
+
+    const temp = array[start];
+    array[start] = array[end];
+    array[end] = temp;
+    start++;
+    end--;
+  }
+
+  return array.join('');
+};
+// time O(n) space O(1)
+var reverseOnlyLetters = function (S) {
+  const array = S.split('');
+  let start = 0;
+  let end = array.length - 1;
+  const regex = /[a-zA-Z]/;
+
+  while (start <= end) {
+    if (!regex.test(array[start])) {
+      start++;
+      continue;
+    }
+    if (!regex.test(array[end])) {
+      end--;
+      continue;
+    }
+
+    const temp = array[start];
+    array[start] = array[end];
+    array[end] = temp;
+
+    start++;
+    end--;
+  }
+
+  return array.join('');
+};
+
+// Medium
+
+// Q443
+// String Compression
+// Given an array of characters chars, compress it using the following algorithm:
+// Begin with an empty string s. For each group of consecutive repeating characters in chars:
+// If the group's length is 1, append the character to s.
+// Otherwise, append the character followed by the group's length.
+// The compressed string s should not be returned separately, but instead be stored in the input character array chars. Note that group lengths that are 10 or longer will be split into multiple characters in chars.
+// After you are done modifying the input array, return the new length of the array.
+// You must write an algorithm that uses only constant extra space.
+// Example 1:
+// Input: chars = ["a","a","b","b","c","c","c"]
+// Output: Return 6, and the first 6 characters of the input array should be: ["a","2","b","2","c","3"]
+// Explanation: The groups are "aa", "bb", and "ccc". This compresses to "a2b2c3".
+// Example 2:
+// Input: chars = ["a"]
+// Output: Return 1, and the first character of the input array should be: ["a"]
+// Explanation: The only group is "a", which remains uncompressed since it's a single character.
+// Example 3:
+// Input: chars = ["a","b","b","b","b","b","b","b","b","b","b","b","b"]
+// Output: Return 4, and the first 4 characters of the input array should be: ["a","b","1","2"].
+// Explanation: The groups are "a" and "bbbbbbbbbbbb". This compresses to "ab12".
+// Example 4:
+// Input: chars = ["a","a","a","b","b","a","a"]
+// Output: Return 6, and the first 6 characters of the input array should be: ["a","3","b","2","a","2"].
+// Explanation: The groups are "aaa", "bb", and "aa". This compresses to "a3b2a2". Note that each group is independent even if two groups have the same character.
+// Constraints:
+// 1 <= chars.length <= 2000
+// chars[i] is a lower-case English letter, upper-case English letter, digit, or symbol.
+
+var compress = function (chars) {
+  let write = 0,
+    count = 0,
+    letter = chars[0];
+  for (let read = 0; read <= chars.length; ++read) {
+    if (chars[read] === letter) {
+      ++count;
+    } else {
+      chars[write++] = letter;
+      letter = chars[read];
+      if (count > 1) {
+        for (const number of String(count)) {
+          chars[write++] = number;
+        }
+      }
+      count = 1;
+    }
+  }
+  return write;
+};
+
 // Q3
 // Longest Substring Without Repeating Characters
 // Given a string s, find the length of the longest substring without repeating characters.
