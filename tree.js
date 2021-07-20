@@ -220,6 +220,13 @@ var levelOrder = function (root) {
 
 // Q105
 //binary tree from preorder to inorder traversal
+var buildTree = function (preorder, inorder) {
+  if (!preorder.length) return null;
+  const index = inorder.indexOf(preorder[0]);
+  const left = buildTree(preorder.slice(1, index + 1), inorder.slice(0, index));
+  const right = buildTree(preorder.slice(index + 1), inorder.slice(index + 1));
+  return { val: preorder[0], left, right };
+};
 
 // iterative
 var isValidBST = function (root) {
@@ -309,3 +316,236 @@ var kthSmallest = function (root, k) {
     }
   }
 };
+
+// Q124
+// Binary Tree maximum path sum
+// A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.
+// The path sum of a path is the sum of the node's values in the path.
+// Given the root of a binary tree, return the maximum path sum of any path.
+// Example 1:
+// Input: root = [1,2,3]
+// Output: 6
+// Explanation: The optimal path is 2 -> 1 -> 3 with a path sum of 2 + 1 + 3 = 6.
+// Example 2:
+// Input: root = [-10,9,20,null,null,15,7]
+// Output: 42
+// Explanation: The optimal path is 15 -> 20 -> 7 with a path sum of 15 + 20 + 7 = 42.
+
+// The Idea
+// Use DFS
+// If a branch's maximum sum is negative, we will never consider that route so we set it to 0
+// Right before we backtrack, calculate the global maximum sum
+// For the backtrack value, we return the current route's max sum
+var maxPathSum = function (root) {
+  let max = -Infinity;
+  var recur = function (node) {
+    if (node == null) return 0;
+    let left = Math.max(0, recur(node.left)); // negative sums will just be ignored
+    let right = Math.max(0, recur(node.right));
+    max = Math.max(left + right + node.val, max); // calculate the global max
+    return Math.max(left, right) + node.val; // return current route's best sum
+  };
+  recur(root);
+  return max;
+};
+
+// Q208
+// Implement Trie (Prefix Tree)
+
+// The Idea
+// Store the entire trie in an object
+// Each node is an object that uses character as keys to connect to other characters
+// Set isEnd to true for the last character node in a word
+/**
+ * Initialize your data structure here.
+ */
+var Trie = function () {
+  this.root = {};
+};
+
+/**
+ * Inserts a word into the trie.
+ * @param {string} word
+ * @return {void}
+ */
+Trie.prototype.insert = function (word) {
+  let node = this.root;
+  word.split('').forEach((char) => {
+    if (!node[char]) node[char] = {};
+    node = node[char];
+  });
+  node.isEnd = true;
+};
+
+/**
+ * Returns if the word is in the trie.
+ * @param {string} word
+ * @return {boolean}
+ */
+Trie.prototype.search = function (word) {
+  let node = this.searchNode(word);
+  return node != null ? node.isEnd == true : false;
+};
+
+/** javaScript
+ * Returns if there is any word in the trie that starts with the given prefix.
+ * @param {string} prefix
+ * @return {boolean}
+ */
+Trie.prototype.startsWith = function (prefix) {
+  let node = this.searchNode(prefix);
+  return node != null;
+};
+
+Trie.prototype.searchNode = function (word) {
+  let node = this.root;
+  for (let char of word.split('')) {
+    if (node[char]) {
+      node = node[char];
+    } else {
+      return null;
+    }
+  }
+  return node;
+};
+
+// Q211
+// /Design add adn search words data structure
+// The idea
+// Store words as trie
+// Traverse trie using dfs
+/**
+ * Initialize your data structure here.
+ */
+var WordDictionary = function () {
+  this.trie = {};
+};
+
+/**
+ * Adds a word into the data structure.
+ * @param {string} word
+ * @return {void}
+ */
+WordDictionary.prototype.addWord = function (word) {
+  let root = this.trie;
+  for (let i = 0; i < word.length; i++) {
+    if (root[word[i]] == null) root[word[i]] = {};
+    root = root[word[i]];
+  }
+  root.isEnd = true;
+};
+
+/**
+ * Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter.
+ * @param {string} word
+ * @return {boolean}
+ */
+WordDictionary.prototype.search = function (word) {
+  return this.dfs(word, 0, this.trie);
+};
+
+WordDictionary.prototype.dfs = function (word, index, node) {
+  if (index == word.length) return node.isEnd == true;
+
+  if (word[index] == '.') {
+    for (let key in node) {
+      if (this.dfs(word, index + 1, node[key])) return true;
+    }
+  } else {
+    if (node[word[index]] != null) {
+      return this.dfs(word, index + 1, node[word[index]]);
+    }
+  }
+  return false;
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * var obj = new WordDictionary()
+ * obj.addWord(word)
+ * var param_2 = obj.search(word)
+ */
+
+// Q297
+// Serialize and deserialize Binary tree
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+
+/**
+ * Encodes a tree to a single string.
+ *
+ * @param {TreeNode} root
+ * @return {string}
+ */
+var serialize = function (root) {
+  if (root === null) {
+    return '';
+  }
+  var result = [];
+  var queue = [root];
+
+  while (queue.length > 0) {
+    var node = queue.shift();
+
+    if (node === null) {
+      result.push('null');
+      continue;
+    }
+    result.push(node.val);
+    queue.push(node.left);
+    queue.push(node.right);
+  }
+
+  // Remove the trailing nulls
+  loop: for (var i = result.length - 1; i >= 0; i--) {
+    if (result[i] === 'null') {
+      result.splice(i, 1);
+    } else {
+      break loop;
+    }
+  }
+
+  return result.toString();
+};
+
+/**
+ * Decodes your encoded data to tree.
+ *
+ * @param {string} data
+ * @return {TreeNode}
+ */
+var deserialize = function (data) {
+  if (data === '') {
+    return null;
+  }
+  var values = data.split(',');
+  var root = new TreeNode(parseInt(values[0]));
+  var queue = [root];
+  for (var i = 1; i < values.length; i++) {
+    var parent = queue.shift();
+
+    if (values[i] !== 'null') {
+      var left = new TreeNode(parseInt(values[i]));
+      parent.left = left;
+      queue.push(left);
+    }
+    if (values[++i] !== 'null' && i !== values.length) {
+      var right = new TreeNode(parseInt(values[i]));
+      parent.right = right;
+      queue.push(right);
+    }
+  }
+
+  return root;
+};
+
+/**
+ * Your functions will be called as such:
+ * deserialize(serialize(root));
+ */
