@@ -4,7 +4,7 @@
 // You can return the answer in any order.
 // Example 1:
 // Input: nums = [2,7,11,15], target = 9
-// Output: [0,1]
+// Output: [0,1]q
 // Output: Because nums[0] + nums[1] == 9, we return [0, 1].
 // Example 2:
 // Input: nums = [3,2,4], target = 6
@@ -18,7 +18,6 @@ let twoSum = (nums, target) => {
       }
     }
   }
-  c;
 };
 
 let twoSum1 = (nums, target) => {
@@ -114,43 +113,6 @@ let containsDuplicate3 = (nums) => {
   // set does not include same number therefor if duplicate, length is less
   return new Set(nums).size !== nums.length;
 };
-
-// question 53
-// Maximum subarray
-// Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
-// Example 1:
-// Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
-// Output: 6
-// Explanation: [4,-1,2,1] has the largest sum = 6.
-// Example 2:
-// Input: nums = [1]
-// Output: 1
-// Example 3:
-// Input: nums = [5,4,-1,7,8]
-// Output: 23
-
-let maxSubArray = (nums) => {
-  let max = nums[0];
-  let current = Math.max(max, 0);
-
-  for (let i = 1; i < nums.length; i += 1) {
-    current += nums[i];
-    max = Math.max(max, current);
-    current = Math.max(current, 0);
-  }
-
-  return max;
-};
-
-let maxSubArray1 = (nums) => {
-  // DP
-  for (let i = 1; i < nums.length; i++) {
-    nums[i] = Math.max(nums[i], nums[i] + nums[i - 1]);
-  }
-  return Math.max(...nums);
-};
-
-//console.log(maxSubArray1([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
 
 // Q238
 // Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
@@ -322,7 +284,7 @@ let findMin = (nums) => {
 // Example 3:
 // Input: nums = [1], target = 0
 // Output: -1
-// Constraints:
+// Constraints:c
 // 1 <= nums.length <= 5000
 // -104 <= nums[i] <= 104
 // All values of nums are unique.
@@ -502,36 +464,45 @@ function reverseArray(a) {
 console.log(reverseArray([1, 8, 6, 2, 5, 4, 8, 3, 7]));
 
 //Hourglass sum
-let hourglassSum = (arr)=> {
+let hourglassSum = (arr) => {
   // Write your code here
-  let max = -64
-  for(let x = 0; x<4;x++){
-      for(let y = 0; y<4;y++){
-           let sum = arr[x][y] +arr[x][y+1]+arr[x][y+2]+arr[x+1][y+1]+arr[x+2][y]+arr[x+2][y+1]+arr[x+2][y+2]
-           if(sum > max){max= sum}
+  let max = -64;
+  for (let x = 0; x < 4; x++) {
+    for (let y = 0; y < 4; y++) {
+      let sum =
+        arr[x][y] +
+        arr[x][y + 1] +
+        arr[x][y + 2] +
+        arr[x + 1][y + 1] +
+        arr[x + 2][y] +
+        arr[x + 2][y + 1] +
+        arr[x + 2][y + 2];
+      if (sum > max) {
+        max = sum;
       }
-      
+    }
   }
-  return max
-}
+  return max;
+};
 
 // DynamicArray
 let dynamicArray = (n, queries) => {
   // Write your code here
-let arr = [...new Array(n)].map(x => []);
+  let arr = [...new Array(n)].map((x) => []);
   let lastAnswer = 0;
   let ans = [];
-  queries.forEach(v => {
-      let idx = (v[1] ^ lastAnswer) % n;
-      switch (v[0]) {
-          case 1:
-              arr[idx].push(v[2]);
-              break;
-          case 2: lastAnswer = arr[idx][v[2] % arr[idx].length];
-              ans.push(lastAnswer);
-              break;
-          default:
-      }
+  queries.forEach((v) => {
+    let idx = (v[1] ^ lastAnswer) % n;
+    switch (v[0]) {
+      case 1:
+        arr[idx].push(v[2]);
+        break;
+      case 2:
+        lastAnswer = arr[idx][v[2] % arr[idx].length];
+        ans.push(lastAnswer);
+        break;
+      default:
+    }
   });
   return ans;
-}
+};

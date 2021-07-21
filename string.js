@@ -623,7 +623,7 @@ let longestPalindrome = (s) => {
 };
 
 let longestPalindrome = (s) => {
-  // using bubble sort
+  // using bubble sortcc
   let maxPal = '';
 
   for (let i = 0; i < s.length; i++) {

@@ -183,4 +183,177 @@ var findJudge = function (n, trust) {
 };
 
 // Q200
-// number of
+// number of islands
+
+// Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+// An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+// Example 1:
+// Input: grid = [
+//   ["1","1","1","1","0"],
+//   ["1","1","0","1","0"],
+//   ["1","1","0","0","0"],
+//   ["0","0","0","0","0"]
+// ]
+// Output: 1
+// Example 2:
+// Input: grid = [
+//   ["1","1","0","0","0"],
+//   ["1","1","0","0","0"],
+//   ["0","0","1","0","0"],
+//   ["0","0","0","1","1"]
+// ]
+// Output: 3
+
+// O(m*n)
+const numIslands = (grid) => {
+  // set variables
+  let closeIslands = 0;
+  let rows = grid.length;
+  let cols = grid[0].length;
+
+  // loop through grid
+  for (let i = 0; i < rows - 1; i++) {
+    for (let j = 0; j < cols - 1; j++) {
+      if (grid[i][j] === 0) {
+        // if there is a closed island
+        if (isClosedIsland(grid, i, j, rows, cols)) {
+          closeIslands++;
+        }
+      }
+    }
+  }
+  return closeIslands;
+};
+// Takes a cell in a grid with a “1” , turns it into a “0” and explores (DFS) any of the left, right, up, down 1’s
+function sink(row, col, grid) {
+  //Let's return IF
+  // row < 0 OR col < 0 OR row is out of bounds(meaning the row is larger than the number of arrays in the 2d array) OR col is at/out of bounds (meaning the current col is at/over the number of elements a row has.)
+  if (
+    row < 0 ||
+    col < 0 ||
+    row >= grid.length ||
+    col >= grid[row].length ||
+    grid[row][col] === '0'
+  ) {
+    return;
+  }
+
+  //Otherwise, we should explore it!
+  //First let's set the current spot to "0"
+  grid[row][col] = '0';
+
+  //Possibilites:
+  // 1) 1 to the right, left, top, bottom
+  //right
+  sink(row, col + 1, grid);
+  //Left
+  sink(row, col - 1, grid);
+  //Down
+  sink(row + 1, col, grid);
+  //Up
+  sink(row - 1, col, grid);
+}
+
+// Q1254
+// Num of closed islands
+// Given a 2D grid consists of 0s (land) and 1s (water).  An island is a maximal 4-directionally connected group of 0s and a closed island is an island totally (all left, top, right, bottom) surrounded by 1s.
+// Return the number of closed islands.
+// Example 1:
+// Input: grid = [[1,1,1,1,1,1,1,0],[1,0,0,0,0,1,1,0],[1,0,1,0,1,1,1,0],[1,0,0,0,0,1,0,1],[1,1,1,1,1,1,1,0]]
+// Output: 2
+// Explanation:
+// Islands in gray are closed because they are completely surrounded by water (group of 1s).
+// Example 2
+// Input: grid = [[0,0,1,0,0],[0,1,0,1,0],[0,1,1,1,0]]
+// Output: 1
+// Example 3:
+// Input: grid = [[1,1,1,1,1,1,1],
+//                [1,0,0,0,0,0,1],
+//                [1,0,1,1,1,0,1],
+//                [1,0,1,0,1,0,1],
+//                [1,0,1,1,1,0,1],
+//                [1,0,0,0,0,0,1],
+//                [1,1,1,1,1,1,1]]
+// Output: 2
+
+// O(m*n)
+var closedIsland = function (grid) {
+  // set variables
+  let closeIslands = 0;
+  let rows = grid.length;
+  let cols = grid[0].length;
+
+  // loop through grid
+  for (let i = 0; i < rows - 1; i++) {
+    for (let j = 0; j < cols - 1; j++) {
+      if (grid[i][j] === 0) {
+        // if there is a closed island
+        if (isClosedIsland(grid, i, j, rows, cols)) {
+          closeIslands++;
+        }
+      }
+    }
+  }
+  return closeIslands;
+};
+
+function isClosedIsland(grid, i, j, rows, cols) {
+  // -1 visited
+  // 1 water
+  // 0 land
+  if (grid[i][j] == -1 || grid[i][j] === 1) return true;
+  // we know we hav a 0 (land)
+  if (isOnPerimeter(i, j, rows, cols)) return false;
+  // confirm visited
+  grid[r][c] = -1;
+  // check all directions
+  const left = isClosedIsland(grid, i, j - 1, rows, cols);
+  const right = isClosedIsland(grid, i, j + 1, rows, cols);
+  const up = isClosedIsland(grid, i - 1, j, rows, cols);
+  const down = isClosedIsland(grid, i + 1, j, rows, cols);
+  // if all true return true
+  return left && right && up && down;
+}
+
+function isOnPerimeter(i, j, rows, cols) {
+  return i == 0 || j === 0 || i == rows - 1 || j == cols - 1;
+}
+
+// Q695
+// max area of island
+// You are given an m x n binary matrix grid. An island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
+// The area of an island is the number of cells with a value 1 in the island.
+// Return the maximum area of an island in grid. If there is no island, return 0.
+
+// O(m*n)
+var maxAreaOfIsland = function (grid) {
+  // set variables
+  let max = 0;
+  let rows = grid.length;
+  let cols = grid[0].length;
+
+  // loop through grid
+  for (let i = 0; i < rows - 1; i++) {
+    for (let j = 0; j < cols - 1; j++) {
+      if (grid[i][j] === 0) {
+        // get area of island
+        let area = getArea(grid, i, j, row, cols);
+        max = Math.max(max, area);
+      }
+    }
+  }
+  return max;
+};
+
+const getArea = (grid, i, j, rows, cols) => {
+  // check for out of bounds and if position is 0 (water)
+  if (i < 0 || j < 0 || i >= rows || j >= cols || grid[i][j] == 0) return 0;
+  // change counted to 0 so no double count
+  grid[row][col] = 0;
+  // check all direction
+  const left = getArea(row, col - 1, grid);
+  const right = getArea(row, col + 1, grid);
+  const up = getArea(row - 1, col, grid);
+  const down = getArea(row + 1, col, grid);
+  return up + down + left + right + 1;
+};
