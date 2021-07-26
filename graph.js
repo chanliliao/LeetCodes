@@ -37,7 +37,7 @@ const numIslands = (grid) => {
       }
     }
   }
-  return closeIslands;
+  return Islands;
 };
 
 function sink(grid, i, j, rows, cols) {
