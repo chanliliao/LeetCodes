@@ -75,3 +75,84 @@ let maxSubArray1 = (nums) => {
   }
   return Math.max(...nums);
 };
+
+// Q62
+// A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+// The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+// How many possible unique paths are there?
+// Example 2:
+// Input: m = 3, n = 2
+// Output: 3
+// Explanation:
+// From the top-left corner, there are a total of 3 ways to reach the bottom-right corner:
+// 1. Right -> Down -> Down
+// 2. Down -> Down -> Right
+// 3. Down -> Right -> Down
+
+// brute force recursive
+const uniquePaths = (m, n) => {
+  return helper(m, n, 1, 1);
+};
+
+const helper = (m, n, row, col) => {
+  if (row === m && col === n) return 1;
+  if (row > m || col > n) return 0;
+
+  const pathsRight = helper(m, n, row, col + 1);
+  const pathsDown = helper(m, n, row + 1, col);
+
+  return pathsRight + pathsDown;
+};
+
+// DP
+var uniquePaths = function (m, n) {
+  let dp = new Array(m).fill(0).map(() => new Array(n));
+  for (let row = 0; row < m; row++) {
+    for (let col = 0; col < n; col++) {
+      if (row === 0 || col === 0) {
+        dp[row][col] = 1;
+      } else {
+        dp[row][col] = dp[row - 1][col] + dp[row][col - 1];
+      }
+    }
+  }
+  return dp[m - 1][n - 1];
+  // T.C: O(M*N)
+  // S.C: O(M*N)
+};
+
+// Q322
+// // Coin Change
+// You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+// Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+// You may assume that you have an infinite number of each kind of coin.
+// Example 1:
+// Input: coins = [1,2,5], amount = 11
+// Output: 3
+// Explanation: 11 = 5 + 5 + 1
+// Example 2:
+// Input: coins = [2], amount = 3
+// Output: -1
+// Example 3:
+// Input: coins = [1], amount = 0
+// Output: 0
+// Example 4:
+// Input: coins = [1], amount = 1
+// Output: 1
+// Example 5:
+// Input: coins = [1], amount = 2
+// Output: 2
+
+const coinChange = (coins, amount) => {
+  // dp[i] represents the least amount of coins that can make the value equals to the i
+  const dp = Array(amount + 1).fill(Infinity);
+  dp[0] = 0;
+  for (let i = 1; i <= amount; i++) {
+    for (const coin of coins) {
+      if (i - coin >= 0) {
+        dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+      }
+    }
+  }
+  return dp[amount] === Infinity ? -1 : dp[amount];
+};
