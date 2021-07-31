@@ -1,3 +1,36 @@
+// Question 387
+// First Unique Character in a String
+// Given a string, find the first non-repeating character in it and return its index. If it doesn't exist, return -1.
+// Examples:
+// s = "leetcode"
+// return 0.
+// s = "loveleetcode"
+// return 2.
+
+let firstUniqChar = (s) => {
+  // using string function
+  for (let i = 0; i < s.length; ++i)
+    if (s.indexOf(s[i]) === s.lastIndexOf(s[i])) return i;
+  return -1;
+};
+
+let firstUniqChar1 = (s) => {
+  // using map
+  const map = new Map();
+
+  for (const letter of s) {
+    map.set(letter, map.get(letter) + 1 || 1);
+  }
+
+  for (let i = 0; i < s.length; i++) {
+    if (map.get(s[i]) === 1) {
+      return i;
+    }
+  }
+
+  return -1;
+};
+
 // Question 242
 // Valid Anagram
 // Given two strings s and t , write a function to determine if t is an anagram of s.
