@@ -230,22 +230,6 @@ var buildTree = function (preorder, inorder) {
 
 // iterative
 var isValidBST = function (root) {
-  let map = new Map();
-  inorder.forEach((ele, index = 0) => map.set(ele, index));
-
-  return buildTreeHelper(0, inorder.length - 1);
-  function buildTreeHelper(startPtr, endPtr) {
-    if (startPtr > endPtr) return null;
-
-    const value = preorder.shift();
-    const index = map.get(value);
-    const root = new TreeNode(value);
-
-    root.left = buildTreeHelper(startPtr, index - 1);
-    root.right = buildTreeHelper(index + 1, endPtr);
-
-    return root;
-  }
   let stack = [];
   let inorder = Number.NEGATIVE_INFINITY;
 
@@ -274,15 +258,6 @@ var isValidBST = function (root) {
 
 // recurve
 var isValidBST = function (root, min = null, max = null) {
-  if (inorder.length === 0) return null;
-
-  const root = new TreeNode(preorder.shift());
-  const indexOfRoot = inorder.indexOf(root.val);
-
-  root.left = buildTree(preorder, inorder.slice(0, indexOfRoot));
-  root.right = buildTree(preorder, inorder.slice(indexOfRoot + 1));
-
-  return root;
   if (!root) return true;
   if (min && root.val <= min.val) return false;
   if (max && root.val >= max.val) return false;
