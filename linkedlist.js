@@ -1,6 +1,5 @@
 // Q206
-//Reverse Linked List
-// Given the head of a singly linked list, reverse the list, and return the reversed list.
+//Reverse a singly Linked List
 
 // ES6
 let reverseLL = (head) => {
@@ -33,6 +32,7 @@ let reverseLL = (head) => {
   return head;
 };
 
+// iteratively with two pointers
 let reverseLL = (head) => {
   if (head === null) return null;
   let previous = null;
@@ -56,6 +56,46 @@ let reverseLL = (head, prev = null) => {
   let next = head.next;
   head.next = prev;
   return reverseList(next, head);
+};
+
+// Q141
+// cycleLL
+
+// iteratively with set
+let cycleLL = (head) => {
+  let set = new Set();
+  let dummy = head;
+
+  while (dummy) {
+    if (set.has(dummy)) {
+      return true;
+    } else {
+      set.add(dummy);
+    }
+
+    dummy = dummy.next;
+  }
+  return false;
+};
+
+// iteratively with two pointers
+let cycleLL = (head) => {
+  if (head == null) {
+    return 0;
+  }
+
+  let slow = head;
+  let fast = head;
+
+  while (fast != null && fast.next != null) {
+    slow = slow.next;
+    fast = fast.next.next;
+
+    if (slow == fast) {
+      return 1;
+    }
+  }
+  return 0;
 };
 
 // Q21
@@ -99,42 +139,6 @@ let mergeSortLL = (head1, head2) => {
 
   curr.next = head1 != null ? head1 : head2;
   return newHead.next;
-};
-
-// Q141
-// cycleLL
-
-let cycleLL = (head) => {
-  if (head == null) {
-    return 0;
-  }
-
-  let slow = head;
-  let fast = head;
-
-  while (fast != null && fast.next != null) {
-    slow = slow.next;
-    fast = fast.next.next;
-
-    if (slow == fast) {
-      return 1;
-    }
-  }
-  return 0;
-};
-
-// Q19
-// Remove nth node from end of list
-
-let removeNthFromEnd = (head, n) => {
-  // two pointer one moving n ahead
-  let fast = head,
-    slow = head;
-  for (let i = 0; i < n; i++) fast = fast.next;
-  if (!fast) return head.next;
-  while (fast.next) (fast = fast.next), (slow = slow.next);
-  slow.next = slow.next.next;
-  return head;
 };
 
 // Q143
@@ -205,6 +209,20 @@ let merge = (l1, l2) => {
     l1 = l1Next;
     l2 = l2Next;
   }
+};
+
+// Q19
+// Remove nth node from end of list
+
+let removeNthFromEnd = (head, n) => {
+  // two pointer one moving n ahead
+  let fast = head,
+    slow = head;
+  for (let i = 0; i < n; i++) fast = fast.next;
+  if (!fast) return head.next;
+  while (fast.next) (fast = fast.next), (slow = slow.next);
+  slow.next = slow.next.next;
+  return head;
 };
 
 // Q83
