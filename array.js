@@ -1,15 +1,7 @@
 // Question 1
-// Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
-// You may assume that each input would have exactly one solution, and you may not use the same element twice.
-// You can return the answer in any order.
-// Example 1:
-// Input: nums = [2,7,11,15], target = 9
-// Output: [0,1]q
-// Output: Because nums[0] + nums[1] == 9, we return [0, 1].
-// Example 2:
-// Input: nums = [3,2,4], target = 6
-// Output: [1,2]
+// Two Sum
 
+// # Iteratively double for loop
 let twoSum = (nums, target) => {
   for (let i = 0; i < nums.length; i++) {
     for (let j = i + 1; j < nums.length; j++) {
@@ -20,6 +12,7 @@ let twoSum = (nums, target) => {
   }
 };
 
+// Iteratively with map
 let twoSum1 = (nums, target) => {
   let map = new Map();
   for (let i = 0; i < nums.length; i++) {
@@ -30,23 +23,10 @@ let twoSum1 = (nums, target) => {
   }
 };
 
-// console.log(twoSum1([3, 2, 4], 6));
-
 // Example 121
 // Best Time to Buy and Sell Stock
-// You are given an array prices where prices[i] is the price of a given stock on the ith day.
-// You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
-// Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
-// Example 1:
-// Input: prices = [7,1,5,3,6,4]
-// Output: 5
-// Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
-// Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
-// Example 2:
-// Input: prices = [7,6,4,3,1]
-// Output: 0
-// Explanation: In this case, no transactions are done and the max profit = 0.
 
+// two pointer
 let maxProfit = (prices) => {
   let profit = 0;
   let min = prices[0];
@@ -62,6 +42,7 @@ let maxProfit = (prices) => {
   return profit;
 };
 
+// es6 foreach
 let maxProfit1 = (prices) => {
   let currentMaxProfit = 0;
   let minPrice = prices[0];
@@ -74,16 +55,10 @@ let maxProfit1 = (prices) => {
   return currentMaxProfit;
 };
 
-// console.log(maxProfit1([7, 1, 5, 3, 6, 4]));
-
 //  Question 217
 //  Contains duplicate
-// Given an array of integers, find if the array contains any duplicates.
-// Your function should return true if any value appears at least twice in the array, and it should return false if every element is distinct.
-// Example 1:
-// Input: [1,2,3,1]
-// Output: true
 
+// using set
 let containsDuplicate = (nums) => {
   // t=O(n), s=O(n)
   let map = new Set();
@@ -97,6 +72,7 @@ let containsDuplicate = (nums) => {
   return false;
 };
 
+// using sort
 let containsDuplicate2 = (nums) => {
   // t=O(nlogn), s=O(1)
   nums.sort((a, b) => a - b);
@@ -109,8 +85,8 @@ let containsDuplicate2 = (nums) => {
   return false;
 };
 
+// using the idea set does not containe duplicate. length is less
 let containsDuplicate3 = (nums) => {
-  // set does not include same number therefor if duplicate, length is less
   return new Set(nums).size !== nums.length;
 };
 

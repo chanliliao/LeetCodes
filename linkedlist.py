@@ -137,3 +137,83 @@ def mergeSortedLL(self,l1,l2):
     ans = ListNode(l1.val)
     ans.next = self.mergeSortedLL(l1.next,l2)
   return ans
+
+# Q143
+# Reorder LL
+
+#Iteratively with array 
+def reorderLL(self,head):
+
+
+  return 1
+
+#Iteratively with split,reverse,merge using pointers 
+def reorderLL(head):
+  def split(node):
+    secondHalf = None
+    slow,fast = node, node
+
+    while fast and fast.next:
+      slow = slow.next
+      fast = fast.next.next
+      
+    secondHalf = slow.next
+    return secondHalf
+
+  def reverse(node):
+    prev = None
+    curr = node
+
+    while curr:
+      next = curr.next
+      curr.next = prev
+      curr = next 
+    
+    return node
+
+  def merge(l1, l2):
+    l1next = None
+    l2next = None
+
+    while l2:
+      l1next = l1.next
+      l2next = l2.next
+      
+      l1.next = l2
+      l2.next = l1next
+
+      l1 = l1next
+      l2 = l2next
+  
+  endHalf = split(head)
+  endHalf = reverse(endHalf)
+  merge(endHalf)
+
+# Q19
+# Remove Nth node from end of list
+
+#Iteratively with arr and arr methods
+def removeNthNode (self, head, n):
+  return 1
+
+#Iteratively two pinter
+def removeNthNode (self, head, n):
+  # create dummy 
+  dummy = ListNode(0,head)
+  left = dummy
+  right = head
+
+  # create distance n using while loop
+  while n > 0 and right:
+    right = right.next
+    n -= 1
+  
+  # traverse the LL
+  while right:
+    left = left.next
+    right = right.next
+  
+  # delete the node
+  left.next = left.next.next
+
+  return dummy.next
