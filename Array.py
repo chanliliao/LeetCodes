@@ -57,3 +57,48 @@ def duplicate(arr):
 # Iteratively with set and check length
 def containsDuplicate(self, arr):
   return len(arr) != len(set(arr))
+
+# Q53 
+# Maximum Subarray
+
+# sliding window where negative prefix is remove
+def maxSub(arr):
+  maxNum = arr[0]
+  curr = 0
+
+  for num in arr:
+    curr += num
+    maxNum = max(curr,maxNum)
+    curr = max(curr, 0)
+  return maxNum
+
+#Q238
+# product of array except self
+
+def productArrayExceptSelf(arr):
+  ans = [1] * (len(arr))
+  pre = 1
+  post = 1
+
+  for i in range(len(arr)):
+    ans[i] = pre
+    pre *= arr[i]
+  
+  for i in range(len(arr)-1,-1,-1):
+    ans[i] *= post
+    post *= arr[i]
+  return ans
+
+# Q152
+# Maximum product subarray
+
+def maxProductSub(arr):
+  maxNum = max(arr)
+  currMin, currMax = 1,1
+
+  for n in arr:
+    temp = currMax * n
+    currMax = max(n, temp, currMin * n)
+    currMin = max(n, temp, currMin * n)
+    maxNum = max(currMax, maxNum)
+  return maxNum

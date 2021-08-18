@@ -90,21 +90,24 @@ let containsDuplicate3 = (nums) => {
   return new Set(nums).size !== nums.length;
 };
 
+// Q53
+// Maximum subarray
+
+let maxSubArray = (nums) => {
+  let max = nums[0];
+  let current = Math.max(max, 0);
+
+  for (let i = 1; i < nums.length; i += 1) {
+    current += nums[i];
+    max = Math.max(max, current);
+    current = Math.max(current, 0);
+  }
+
+  return max;
+};
+
 // Q238
-// Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
-// The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
-// You must write an algorithm that runs in O(n) time and without using the division operation.
-// Example 1:
-// Input: nums = [1,2,3,4]
-// Output: [24,12,8,6]
-// Example 2:
-// Input: nums = [-1,1,0,-3,3]
-// Output: [0,0,9,0,0]
-// Constraints:
-// 2 <= nums.length <= 105
-// -30 <= nums[i] <= 30
-// The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
-// Follow up: Can you solve the problem in O(1) extra space complexity? (The output array does not count as extra space for space complexity analysis.)
+// Product of array except self
 
 let productExceptSelf = (nums) => {
   var output = [];
@@ -159,25 +162,8 @@ let productExceptSelf3 = (nums) => {
   return nums;
 };
 
-// console.log(productExceptSelf([1, 2, 3, 4]));
-
 // Question 152
 // Maximum Product Subarray
-// Given an integer array nums, find a contiguous non-empty subarray within the array that has the largest product, and return the product.
-// It is guaranteed that the answer will fit in a 32-bit integer.
-// A subarray is a contiguous subsequence of the array.
-// Example 1:
-// Input: nums = [2,3,-2,4]
-// Output: 6
-// Explanation: [2,3] has the largest product 6.
-// Example 2:
-// Input: nums = [-2,0,-1]
-// Output: 0
-// Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
-// Constraints:
-// 1 <= nums.length <= 2 * 104
-// -10 <= nums[i] <= 10
-// The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
 
 let maxProduct = (nums) => {
   let max = -Infinity;
@@ -422,63 +408,3 @@ let maxArea = (height) => {
 };
 
 console.log(maxArea([1, 8, 6, 2, 5, 4, 8, 3, 7]));
-
-// hacker rank questions
-// Reverse Array
-
-function reverseArray(a) {
-  // Write your code here
-  if (a.length < 2) return a;
-
-  let ans = [];
-  for (let i = a.length - 1; i > -1; i--) {
-    ans.push(a[i]);
-  }
-  return ans;
-}
-
-console.log(reverseArray([1, 8, 6, 2, 5, 4, 8, 3, 7]));
-
-//Hourglass sum
-let hourglassSum = (arr) => {
-  // Write your code here
-  let max = -64;
-  for (let x = 0; x < 4; x++) {
-    for (let y = 0; y < 4; y++) {
-      let sum =
-        arr[x][y] +
-        arr[x][y + 1] +
-        arr[x][y + 2] +
-        arr[x + 1][y + 1] +
-        arr[x + 2][y] +
-        arr[x + 2][y + 1] +
-        arr[x + 2][y + 2];
-      if (sum > max) {
-        max = sum;
-      }
-    }
-  }
-  return max;
-};
-
-// DynamicArray
-let dynamicArray = (n, queries) => {
-  // Write your code here
-  let arr = [...new Array(n)].map((x) => []);
-  let lastAnswer = 0;
-  let ans = [];
-  queries.forEach((v) => {
-    let idx = (v[1] ^ lastAnswer) % n;
-    switch (v[0]) {
-      case 1:
-        arr[idx].push(v[2]);
-        break;
-      case 2:
-        lastAnswer = arr[idx][v[2] % arr[idx].length];
-        ans.push(lastAnswer);
-        break;
-      default:
-    }
-  });
-  return ans;
-};

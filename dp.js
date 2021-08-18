@@ -55,19 +55,6 @@ console.log(climbStairs1(7));
 // Input: nums = [5,4,-1,7,8]
 // Output: 23
 
-let maxSubArray = (nums) => {
-  let max = nums[0];
-  let current = Math.max(max, 0);
-
-  for (let i = 1; i < nums.length; i += 1) {
-    current += nums[i];
-    max = Math.max(max, current);
-    current = Math.max(current, 0);
-  }
-
-  return max;
-};
-
 let maxSubArray1 = (nums) => {
   // DP
   for (let i = 1; i < nums.length; i++) {
@@ -186,7 +173,7 @@ var lengthOfLIS = function (nums) {
   return Math.max(...dp);
 };
 
-// Q 139 
+// Q 139
 // Word Break
 // Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.
 // Note that the same word in the dictionary may be reused multiple times in the segmentation.
@@ -222,7 +209,7 @@ const wordBreak = (s, wordDict) => {
   return dp[s.length];
 };
 
-// Q198 
+// Q198
 // house robber
 // You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
 // Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.
@@ -237,19 +224,19 @@ const wordBreak = (s, wordDict) => {
 // Explanation: Rob house 1 (money = 2), rob house 3 (money = 9) and rob house 5 (money = 1).
 // Total amount you can rob = 2 + 9 + 1 = 12.
 
-var rob2 = function(nums) {
+var rob2 = function (nums) {
   let memo = [];
   memo[0] = 0;
   memo[1] = nums[0];
-  
-  for (let i=1;i<nums.length;i++) {
-      memo[i+1] = Math.max(memo[i], memo[i-1] + nums[i]);
-  }
-  
-  return memo[nums.length];   
-}
 
-// Q213 
+  for (let i = 1; i < nums.length; i++) {
+    memo[i + 1] = Math.max(memo[i], memo[i - 1] + nums[i]);
+  }
+
+  return memo[nums.length];
+};
+
+// Q213
 // You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed. All houses at this place are arranged in a circle. That means the first house is the neighbor of the last one. Meanwhile, adjacent houses have a security system connected, and it will automatically contact the police if two adjacent houses were broken into on the same night.
 // Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.
 // Example 1:
@@ -266,27 +253,27 @@ var rob2 = function(nums) {
 // Output: 0
 
 // the idea is to get two dp array one with the first house and one with the last house
-var rob = function(nums) {
+var rob = function (nums) {
   let n = nums.length;
-  if(n===0) return 0;
-  if(n===1) return nums[0];
-  if(n===2) return Math.max(nums[0],nums[1])
-  
+  if (n === 0) return 0;
+  if (n === 1) return nums[0];
+  if (n === 2) return Math.max(nums[0], nums[1]);
+
   let dp1 = new Array(n);
   let dp2 = new Array(n);
-  
-  computeResult(0,n-2,dp1,nums);
-  computeResult(1,n-1,dp2,nums);
-  
-  function computeResult(i,n,dp,nums){
-      dp[i] = nums[i]
-      dp[i+1] = Math.max(dp[i],nums[i+1])
-      
-      for(let j=i+2; j<=n; j++){
-          dp[j] = Math.max(dp[j-1],dp[j-2]+nums[j])
-      }
+
+  computeResult(0, n - 2, dp1, nums);
+  computeResult(1, n - 1, dp2, nums);
+
+  function computeResult(i, n, dp, nums) {
+    dp[i] = nums[i];
+    dp[i + 1] = Math.max(dp[i], nums[i + 1]);
+
+    for (let j = i + 2; j <= n; j++) {
+      dp[j] = Math.max(dp[j - 1], dp[j - 2] + nums[j]);
+    }
   }
-  return Math.max(dp1[n-2],dp2[n-1])
+  return Math.max(dp1[n - 2], dp2[n - 1]);
 };
 
 // Q55
@@ -303,20 +290,19 @@ var rob = function(nums) {
 // Output: false
 // Explanation: You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.
 
-
-var canJump = function(nums) {
+var canJump = function (nums) {
   let max = 0;
-  
+
   for (let i = 0; i < nums.length; i++) {
-      if (i > max) return false;
-      
-      if (i + nums[i] >= nums.length - 1) return true;
-          
-      max = Math.max(max, i + nums[i]);
+    if (i > max) return false;
+
+    if (i + nums[i] >= nums.length - 1) return true;
+
+    max = Math.max(max, i + nums[i]);
   }
 };
 
-//Q337 
+//Q337
 // Combination sum IV
 // Given an array of distinct integers nums and a target integer target, return the number of possible combinations that add up to target.
 // The answer is guaranteed to fit in a 32-bit integer.
@@ -338,22 +324,22 @@ var canJump = function(nums) {
 // Output: 0
 
 // TC = O(mn); SC = O(m)
-var combinationSum4 = function(nums, target) {
+var combinationSum4 = function (nums, target) {
   const dp = Array(target + 1).fill(0);
   dp[0] = 1;
-  
-// for each target sum, find the number of combinations possible
-  for(let i = 1; i <= target; ++i) {
-      nums.forEach(num => {
-          if(i >= num) {
-              dp[i] += dp[i - num];
-          }
-      })
+
+  // for each target sum, find the number of combinations possible
+  for (let i = 1; i <= target; ++i) {
+    nums.forEach((num) => {
+      if (i >= num) {
+        dp[i] += dp[i - num];
+      }
+    });
   }
   return dp[target];
 };
 
-// Q91 
+// Q91
 // decode ways
 // A message containing letters from A-Z can be encoded into numbers using the following mapping:
 // 'A' -> "1"
