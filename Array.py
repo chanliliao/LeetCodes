@@ -72,7 +72,7 @@ def maxSub(arr):
     curr = max(curr, 0)
   return maxNum
 
-#Q238
+# Q238
 # product of array except self
 
 def productArrayExceptSelf(arr):
@@ -102,3 +102,93 @@ def maxProductSub(arr):
     currMin = max(n, temp, currMin * n)
     maxNum = max(currMax, maxNum)
   return maxNum
+
+# Q152
+# Find Minimun in Roated Sorted Array
+
+def minRotated(arr):
+  res = arr[0]
+  left = 0
+  right = len(arr) -1 
+
+  while left <= right:
+    if arr[left] < arr[right]: 
+      res = min(res, arr[left])
+      break
+    pivot = (left + right) // 2
+    res = min(res, arr[pivot])
+    if arr[pivot] >= arr[left]:
+      left = pivot + 1
+    else :
+      right = pivot - 1
+  return res
+
+# Q33 
+# search in rotated sorted array
+
+def searchRotated(arr,target):
+  left = 0
+  right = len(arr) -1 
+
+  while left <= right:
+    pivot = (left + right) // 2
+    if arr[pivot] == target: return pivot
+    if arr[left] < arr[pivot]:
+      # left side
+      if arr[left] <= target and target <= arr[pivot]:
+        right = pivot -1
+      else :
+        left = pivot + 1
+    else :
+      # right side
+      if arr[pivot] <= target and target <= arr[right]:
+        left = pivot + 1
+      else :
+        right = pivot - 1
+  return -1
+
+# Q15
+# 3sum
+
+def threeSum(arr):
+  res = []
+  target = 0
+
+  if len(arr) < 3: 
+    return None
+
+  arr.sort()
+
+  for i, num in enumerate(arr):
+    if i > 0 and num == arr[i-1]:
+      continue
+
+    l,r = i + 1, len(arr)-1
+    while l < r:
+      sum = num + arr[l] + arr[r]
+      if sum < target:
+        l += 1
+      elif sum > target:
+        r -= 1
+      else:
+        res.append([num,arr[l],arr[r]])
+        l +=1
+        while arr[l] == arr[l-1] and l < r:
+          l +=1
+  return res
+
+
+# Q11
+# Container with Most Water
+
+def maxArea(height):
+  ans = 0
+  l, r = 0, len(height)-1
+
+  while l < r:
+    ans = max(ans, min(height[l], height[r]) * (r - l))
+    if height[l] <= height[r]: 
+      l += 1
+    else :
+      r -=1
+  return ans
