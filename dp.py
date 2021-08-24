@@ -180,3 +180,59 @@ def combSum4(nums,target):
     for n in nums:
       dp[total] += dp.get(total-n,0)
   return dp[target]
+
+# Q213
+# house robber II
+
+def houseRobber2(self,nums):
+  # apply the function to first without last and last without first
+  return max(nums[0], helper(nums[1:]),helper(nums[:-1]))
+
+def helper(self,nums):
+  rob1, rob2 = 0,0
+  for i in nums:
+    temp = max(i+rob1, rob2)
+    rob1 = rob2
+    rob2 = temp
+  return rob2
+
+# Q139
+# decode ways
+
+def decode(s):
+  dp={ len(s):1}
+
+  for i in range(len(s) -1, -1, -1):
+    if s[i]== '0':
+      dp[i]= 0
+    else: 
+      dp[i] = dp[i+1]
+    
+    if (i+1 < len(s) and (s[i] == '1' or s[i] == '2' and s[i+1] in '0123456')):
+      dp[i] += dp[i+2]
+  return dp[0]
+
+
+# Q139
+# unique paths
+
+def uniquePaths(m,n):
+  row = [1]*n
+
+  for i in range(m-1):
+    newRow = [1]*m
+    for j in range(n-2-1,-1,-1):
+      newRow[j] = newRow[j+1] +row[i]
+    row=newRow
+  return row[0]
+
+# Q139
+# jump game
+
+def jumpGame(nums):
+  goal = len(nums) -1
+
+  for i in range(len(nums) -1, -1, -1):
+    if i + nums[i] >= goal:
+      goal= int(nums[i])
+  return True if goal == 0 else False

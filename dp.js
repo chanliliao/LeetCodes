@@ -108,23 +108,6 @@ const helper = (m, n, row, col) => {
   return pathsRight + pathsDown;
 };
 
-// DP
-var uniquePaths = function (m, n) {
-  let dp = new Array(m).fill(0).map(() => new Array(n));
-  for (let row = 0; row < m; row++) {
-    for (let col = 0; col < n; col++) {
-      if (row === 0 || col === 0) {
-        dp[row][col] = 1;
-      } else {
-        dp[row][col] = dp[row - 1][col] + dp[row][col - 1];
-      }
-    }
-  }
-  return dp[m - 1][n - 1];
-  // T.C: O(M*N)
-  // S.C: O(M*N)
-};
-
 // Q 139
 // Word Break
 
@@ -192,21 +175,6 @@ var rob2 = function (nums) {
   return Math.max(dp1[n - 2], dp2[n - 1]);
 };
 
-// Q55
-// jump game
-
-var canJump = function (nums) {
-  let max = 0;
-
-  for (let i = 0; i < nums.length; i++) {
-    if (i > max) return false;
-
-    if (i + nums[i] >= nums.length - 1) return true;
-
-    max = Math.max(max, i + nums[i]);
-  }
-};
-
 // Q91
 // decode ways
 
@@ -220,4 +188,36 @@ const numDecodings = (s) => {
     if (10 <= two && two <= 26) dp[i] += dp[i - 2]; // We want [10, 26]
   }
   return dp[s.length];
+};
+
+// DP
+var uniquePaths = function (m, n) {
+  let dp = new Array(m).fill(0).map(() => new Array(n));
+  for (let row = 0; row < m; row++) {
+    for (let col = 0; col < n; col++) {
+      if (row === 0 || col === 0) {
+        dp[row][col] = 1;
+      } else {
+        dp[row][col] = dp[row - 1][col] + dp[row][col - 1];
+      }
+    }
+  }
+  return dp[m - 1][n - 1];
+  // T.C: O(M*N)
+  // S.C: O(M*N)
+};
+
+// Q55
+// jump game
+
+var canJump = function (nums) {
+  let max = 0;
+
+  for (let i = 0; i < nums.length; i++) {
+    if (i > max) return false;
+
+    if (i + nums[i] >= nums.length - 1) return true;
+
+    max = Math.max(max, i + nums[i]);
+  }
 };
