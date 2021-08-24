@@ -180,8 +180,6 @@ let maxProduct = (nums) => {
   return max;
 };
 
-// console.log(maxProduct([2, 3, -2, 4, 6, -2, -2]));
-
 // Q153
 // Find Minimum in Rotated Sorted Array
 
