@@ -225,6 +225,48 @@ let removeNthFromEnd = (head, n) => {
   return head;
 };
 
+// Extra
+
+// Q1290
+// convert Binary Num in a linked
+const convertB = (head) => {
+  let res = 0;
+  let node = head;
+  while (node) {
+    res = res * 2 + node.val;
+    node = node.next;
+  }
+  return res;
+};
+
+// Q876
+// middle of the LL
+const middleLL = (head) => {
+  let slow = head;
+  let fast = head;
+
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+
+  return slow;
+};
+
+// Q237 delete ndoe in LL
+// middle of the LL
+const deleteLL = (node) => {
+  node.val = node.next.val;
+  node.next = node.next.next;
+};
+
+// Q237 delete ndoe in LL
+// middle of the LL
+const removeDup = (node) => {
+  node.val = node.next.val;
+  node.next = node.next.next;
+};
+
 // Q83
 // remove duplicates from sorted list
 let deleteDuplicates = (head) => {
@@ -251,43 +293,4 @@ let getIntersectionNode = (headA, headB) => {
     b = !b ? headA : b.next;
   }
   return a;
-};
-
-// hacker rank
-// insert node at tail
-// -->get to last node
-let insertNodeAtTail = (head, data) => {
-  if (head === null) return new SinglyLinkedListNode(data);
-  let lastNode = getLast(head);
-  lastNode.next = new SinglyLinkedListNode(data);
-  return head;
-};
-
-let getLast = (head) => {
-  let lastNode = head;
-  if (lastNode) {
-    while (lastNode.next) {
-      lastNode = lastNode.next;
-    }
-  }
-  return lastNode;
-};
-
-// deleted node
-
-let deleteNode = (llist, position) => {
-  // Write your code here
-  if (position === 0) {
-    return (llist = llist.next);
-  }
-  let current = llist;
-  for (let i = 0; i < position - 1; i++) {
-    if (current.next) {
-      current = current.next;
-    }
-  }
-
-  let temp = current.next;
-  current.next = temp.next;
-  return llist;
 };

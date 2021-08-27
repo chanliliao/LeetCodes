@@ -1,24 +1,23 @@
+// Q133
+// clone graph
+
+const cloneGraph = (node) => {
+  if (node === null) {
+    return null;
+  }
+  const map = new Map();
+  const clone = (root) => {
+    if (!map.has(root.val)) {
+      map.set(root.val, new Node(root.val));
+      map.get(root.val).neighbors = root.neighbors.map(clone);
+    }
+    return map.get(root.val);
+  };
+  return clone(node);
+};
+
 // Q200
 // number of islands
-
-// Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
-// An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
-// Example 1:
-// Input: grid = [
-//   ["1","1","1","1","0"],
-//   ["1","1","0","1","0"],
-//   ["1","1","0","0","0"],
-//   ["0","0","0","0","0"]
-// ]
-// Output: 1
-// Example 2:
-// Input: grid = [
-//   ["1","1","0","0","0"],
-//   ["1","1","0","0","0"],
-//   ["0","0","1","0","0"],
-//   ["0","0","0","1","1"]
-// ]
-// Output: 3
 
 // O(m*n)
 const numIslands = (grid) => {
@@ -57,9 +56,6 @@ function sink(grid, i, j, rows, cols) {
 
 // Q695
 // max area of island
-// You are given an m x n binary matrix grid. An island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
-// The area of an island is the number of cells with a value 1 in the island.
-// Return the maximum area of an island in grid. If there is no island, return 0.
 
 // O(m*n)
 var maxAreaOfIsland = function (grid) {
@@ -131,25 +127,6 @@ const computePath = (grid, i, j, rows, cols, direction) => {
 
 // Q1254
 // Num of closed islands
-// Given a 2D grid consists of 0s (land) and 1s (water).  An island is a maximal 4-directionally connected group of 0s and a closed island is an island totally (all left, top, right, bottom) surrounded by 1s.
-// Return the number of closed islands.
-// Example 1:
-// Input: grid = [[1,1,1,1,1,1,1,0],[1,0,0,0,0,1,1,0],[1,0,1,0,1,1,1,0],[1,0,0,0,0,1,0,1],[1,1,1,1,1,1,1,0]]
-// Output: 2
-// Explanation:
-// Islands in gray are closed because they are completely surrounded by water (group of 1s).
-// Example 2
-// Input: grid = [[0,0,1,0,0],[0,1,0,1,0],[0,1,1,1,0]]
-// Output: 1
-// Example 3:
-// Input: grid = [[1,1,1,1,1,1,1],
-//                [1,0,0,0,0,0,1],
-//                [1,0,1,1,1,0,1],
-//                [1,0,1,0,1,0,1],
-//                [1,0,1,1,1,0,1],
-//                [1,0,0,0,0,0,1],
-//                [1,1,1,1,1,1,1]]
-// Output: 2
 
 // O(m*n)
 var closedIsland = function (grid) {
@@ -196,13 +173,6 @@ function isOnPerimeter(i, j, rows, cols) {
 
 // Q1210
 // Path to max gold
-// In a gold mine grid of size m x n, each cell in this mine has an integer representing the amount of gold in that cell, 0 if it is empty.
-// Return the maximum amount of gold you can collect under the conditions:
-// Every time you are located in a cell you will collect all the gold in that cell.
-// From your position, you can walk one step to the left, right, up, or down.
-// You can't visit the same cell more than once.
-// Never visit a cell with 0 gold.
-// You can start and stop collecting gold from any position in the grid that has some gold.
 
 // O(m*n)
 var maxGold = function (grid) {
@@ -244,12 +214,6 @@ const findMaxGold = (grid, i, j, rows, cols, gold = 0) => {
 
 // Q797
 // all path from source to target
-// Given a directed acyclic graph (DAG) of n nodes labeled from 0 to n - 1, find all possible paths from node 0 to node n - 1 and return them in any order.
-// The graph is given as follows: graph[i] is a list of all nodes you can visit from node i (i.e., there is a directed edge from node i to node graph[i][j]).
-// Example 1:
-// Input: graph = [[1,2],[3],[3],[]]
-// Output: [[0,1,3],[0,2,3]]
-// Explanation: There are two paths: 0 -> 1 -> 3 and 0 -> 2 -> 3.
 
 var allPathsSourceTarget = function (graph) {
   const target = graph.length - 1;
