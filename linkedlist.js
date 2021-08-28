@@ -294,3 +294,222 @@ let getIntersectionNode = (headA, headB) => {
   }
   return a;
 };
+
+// Q234
+// palindrome ll
+let palindromeLL = (head) => {
+  // split half
+  let secondHalf = split(head);
+  // reverse the second half
+  let reverseLL = reverse(secondHalf);
+  // compare the heads
+  while (reverseLL) {
+    if (reverseLL.val !== head.val) {
+      return false;
+    } else {
+      reverseLL = reverseLL.next;
+      head = head.next;
+    }
+  }
+
+  function split(h) {
+    let slow = (fast = h);
+
+    while (fast && fast.next) {
+      fast = fast.next.next;
+      slow = slow.next;
+    }
+
+    return slow;
+  }
+
+  function reverse(h) {
+    let prev = (next = null);
+
+    while (h) {
+      next = h.next;
+      h.next = prev;
+      prev = h;
+      h = next;
+    }
+
+    return prev;
+  }
+};
+
+// Q203
+// remove LL element
+let removeLLElement = (head, target) => {
+  let dummy = new ListNode(0, (next = head));
+  let curr = head;
+  let prev = dummy;
+
+  while (curr) {
+    let next = curr.next;
+
+    if (curr.val === target) {
+      prev.next = next;
+    } else {
+      prev = curr;
+    }
+
+    curr = curr.next;
+  }
+
+  return dummy.next;
+};
+
+// Q2
+// add two numbers
+let addTwoNums = (l1, l2) => {
+  var List = new ListNode(0);
+  var head = List;
+  var sum = 0;
+  var carry = 0;
+
+  while (l1 !== null || l2 !== null || sum > 0) {
+    if (l1 !== null) {
+      sum = sum + l1.val;
+      l1 = l1.next;
+    }
+    if (l2 !== null) {
+      sum = sum + l2.val;
+      l2 = l2.next;
+    }
+    if (sum >= 10) {
+      carry = 1;
+      sum = sum - 10;
+    }
+
+    head.next = new ListNode(sum);
+    head = head.next;
+
+    sum = carry;
+    carry = 0;
+  }
+
+  return List.next;
+};
+
+// Q24
+// swap node in pairs
+let sawpNodeInPairs = (head) => {
+  let dummy = new ListNode(0, head);
+  let curr = head;
+  let prev = dummy;
+
+  while (curr && curr.next) {
+    let nextPair = curr.next.next;
+    second = curr.next;
+
+    second.next = curr;
+    curr.next = nextPair;
+    prev.next = second;
+
+    prev = curr;
+    curr = nextPair;
+  }
+
+  return dummy.next;
+};
+
+// Q148
+// Sort List
+
+let sortList = (head) => {
+  // base case
+  if (!head || !head.next) {
+    return head;
+  }
+  // split
+  let left = head;
+  let right = split(head);
+  let temp = right.next;
+  right.next = null;
+  right = temp;
+  // recursive on splits
+  left = sortList(left);
+  right = sortList(right);
+
+  return merge(left, right);
+
+  function split(h) {
+    let slow = h;
+    let fast = h.next;
+
+    while (fast && fast.next) {
+      fast = fast.next.next;
+      slow = slow.next;
+    }
+
+    return slow;
+  }
+
+  function merge(head1, head2) {
+    let newHead = new SinglyLinkedListNode(-1);
+    let curr = newHead;
+    while (head1 != null && head2 != null) {
+      if (head1.val <= head2.val) {
+        curr.next = head1;
+        curr = curr.next;
+        head1 = head1.next;
+      } else {
+        curr.next = head2;
+        curr = curr.next;
+        head2 = head2.next;
+      }
+    }
+
+    curr.next = head1 != null ? head1 : head2;
+    return newHead.next;
+  }
+};
+
+// Q86
+// partition list
+
+let partitionLL = (head, x) => {
+  let smaller = new ListNode();
+  let larger = new ListNode();
+
+  let sTail = smaller;
+  let lTail = larger;
+
+  while (head) {
+    if (head.val < x) {
+      sTail.next = head;
+      sTail = sTail.next;
+    } else {
+      lTail.next = head;
+      lTail = lTail.next;
+    }
+    head = head.next;
+  }
+
+  sTail.next = larger.next;
+  lTail.next = null;
+
+  return smaller.next;
+};
+
+// Q138
+// copy list with random pointer
+
+let copyLLWithRandomPointer = (head, x) => {
+  if (!head) {
+    return null;
+  }
+  const clones = new Map();
+  let n = head;
+  while (n) {
+    clones.set(n, new Node(n.val));
+    n = n.next;
+  }
+  n = head;
+  while (n) {
+    clones.get(n).next = clones.get(n.next) || null;
+    clones.get(n).random = clones.get(n.random) || null;
+    n = n.next;
+  }
+  return clones.get(head);
+};

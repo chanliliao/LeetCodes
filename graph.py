@@ -22,4 +22,31 @@ def cloneGraph(node):
   
   return clone(node) if node else None
 
+# Q207
+# course schedule
+def canFinish(numCourses, prereq):
+  # map each course to prereq list
+  preMap = {i:[] for i in range(numCourses)}
+  for crs, pre in prereq:
+    preMap[crs].append[pre]
   
+  # visitedset  = all course along the curr dfs path
+  visitSet = set()
+
+  def dfs(crs):
+    if crs in visitSet:
+      return False
+    if preMap[crs] == []:
+      return True
+
+    visitSet.add(crs)
+    for pre in preMap[crs]:
+      if not dfs(pre): 
+        return False 
+    visitSet.remove(crs)
+    preMap[crs] = []
+    return True
+  for crs in range(numCourses):
+    if not dfs(crs):
+      return False
+  return True

@@ -217,3 +217,235 @@ def removeNthNode (self, head, n):
   left.next = left.next.next
 
   return dummy.next
+
+# Extra
+
+# Q1290
+# convert Binary Num in a linked 
+
+def covertB (head):
+  res = 0
+  node = head
+  while node:
+    res = res * 2 + node.value
+    res = res.next
+  return res
+
+# Q876
+# middle of the LL
+
+def middleOfLL (head):
+  slow, fast = head, head, head
+
+  while fast and fast.next:
+    fast = fast.next.next
+    slow = slow.next
+  return slow
+
+# Q237 delete ndoe in LL
+# middle of the LL
+def deleteLL (node):
+  node.val = node.next.val
+  node.next = node.next.next
+
+#  Q83
+#  remove duplicates from sorted list
+def deleteDuplicates (head):
+  current = head
+
+  while current:
+    if current.next and current.val == current.next.val: 
+      current.next = current.next.next
+    else: 
+      current = current.next
+  return head
+
+# Q160
+# intersection of two LL
+def getIntersectionNode(headA, headB):
+  a ,b  = headA, headB
+  while a!= b:
+    a = headB if a is None else a.next
+    b = headA if b is None else b.next
+  return a
+
+# Q234
+# palindrome LL
+def palindromeLL(head):
+  def split(h):
+    slow, fast = head,head
+
+    while fast and fast.next:
+      fast = fast.next.next
+      slow = slow.next
+    return slow
+  
+  def reverse(h):
+    prev,next = None, None
+
+    while h:
+      next = h.next
+      h.next = prev
+      prev = h
+      h = next
+    
+    return prev
+  # split LL half
+  secondHalf = split(head)
+  # reverseLL
+  reverseLL = reverse(secondHalf)
+  # compare old and reverse 
+  while reverseLL:
+    if reverseLL.val != head.val:
+      return False
+    else:
+      reverseLL = reverseLL.next
+      head = head.next
+  
+#  Q203
+# remove LL element
+def removeLLElement (head,val):
+  dummy = ListNode(next=head)
+  curr = head
+  prev = dummy
+
+  while curr:
+    next = curr.next
+
+    if curr.val == val:
+      prev.next = next
+    else:
+      prev = curr
+    curr = curr.next
+  return dummy.next
+
+#  Q2
+# add two number
+def addtwonumber(l1,l2):
+  node = ListNode(0)
+  head = node
+  sum = 0
+  carry = 0
+
+  while l1 or l2 or sum > 0:
+    if l1:
+      sum = sum + l1.val
+      l1 = l1.next
+    if l2:
+      sum = sum + l2.val
+      l2 = l2.next
+    if sum > 9:
+      carry = 1
+      sum = sum - 10
+    
+    head.next = ListNode(sum)
+    head = head.next
+    sum = carry
+    carry = 0
+  return node.next
+
+# Q24
+# swap node in pair
+def swapNode(self,head):
+  dummy = ListNode(0,next=head)
+  prev,curr = dummy, head
+
+  while curr and curr.next:
+    nextPair = head.next.next
+    second = head.next
+
+    prev.next = second
+    second.next = curr
+    curr.next = nextPair
+    
+    prev = curr
+    curr = nextPair
+  
+  return dummy.next
+
+# Q148
+# sortList
+def sortList(self,head):
+  def split(h):
+    slow, fast = h, h.next
+
+    while fast and fast.next:
+      fast = fast.next.next
+      slow = slow.next
+    return slow
+
+  def merge(h1,h2):
+    curr = dummy = ListNode()
+
+    while h1 and h2:
+      if h1.val <= h2.val:
+        curr.next = h1
+        h1 = h1.next      
+      else: 
+        curr.next = h2
+        h2 = h2.next
+      curr = curr.next
+    if h1:
+      curr.next = h1    
+    if h2:
+      curr.next = h2
+    return dummy.next
+  # base case
+  if not head or not head.next:
+    return head
+
+  # split
+  left = head
+  right = split(head)
+  # break link
+  temp = right.next
+  right.next = None
+  right = temp
+  # recursive on splits
+  left = self.sortList(left)
+  right = self.sortList(right)
+
+  return merge(left,right)
+
+# Q86
+# partition list
+
+def partitionLL(head,x):
+  # dummy nodes and tail tracker
+  smaller = ListNode()
+  larger = ListNode()
+  sTail, lTail = smaller, larger
+  # move through and compare and assign 
+  while head:
+    if head.val < x: 
+      sTail.next = head
+      sTail = sTail.next
+    else:
+      lTail.next = head
+      lTail = lTail.next
+    head = head.next
+  # connect tail to head
+  sTail.next = larger.next
+  lTail.next = None
+  # return answer
+  return smaller.next
+
+# Q138
+# copy list with random pointer
+
+def copyLLWithRandomPointer(head):
+  copy = {None:None}
+
+  cur = head
+  while cur:
+    temp = Node(cur.val)
+    copy[cur] = temp
+    cur = cur.next
+  
+  cur= head
+  while cur:
+    temp = copy[cur]
+    temp.next = copy[cur.next]
+    temp.random = copy[cur.random]
+    cur = cur.next
+  return copy[head]
