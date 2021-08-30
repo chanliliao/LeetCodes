@@ -327,3 +327,128 @@ let maxArea = (height) => {
   }
   return ans;
 };
+
+// Extra
+
+// Q1299
+// replace elemenet with greatest ele on right side
+
+const replaceEle = (arr) => {
+  // variables
+  let rightMax = -1;
+  let lastIdx = arr.length - 1;
+
+  // traverse the arr in reverse
+  for (let i = lastIdx; i >= 0; i--) {
+    let newMax = Math.max(rightMax, arr[i]);
+    arr[i] = rightMax;
+    rightMax = newMax;
+  }
+  return arr;
+};
+
+// Example 121
+// Best Time to Buy and Sell Stock II
+
+// two pointer
+let maxProfit = (prices) => {
+  let profit = 0;
+
+  for (let i = 0; i < prices.length; i++) {
+    if (prices[i] < prices[i + 1]) {
+      profit += prices[i + 1] - prices[i];
+    }
+  }
+
+  return profit;
+};
+
+// Example 121
+// pascal triangle
+
+// DP
+let pasvalTri = (numOfRows) => {
+  let pt = [];
+
+  for (let i = 0; i < numOfRows; i++) {
+    pt[i] = [];
+    for (let j = 0; j < i + 1; j++) {
+      if (j == 0 || j == i) {
+        pt[i][j] = 1;
+      } else {
+        pt[i][j] = pt[i - 1][j - 1] + pt[i - 1][j];
+      }
+    }
+  }
+  return pt;
+};
+
+// Example 66
+// plus one
+
+let plusOne = (digits) => {
+  for (var i = digits.length - 1; i >= 0; i--) {
+    digits[i]++;
+    if (digits[i] > 9) {
+      digits[i] = 0;
+    } else {
+      return digits;
+    }
+  }
+  digits.unshift(1);
+  return digits;
+};
+
+// Example 108
+// convert sorted array to bi tree
+
+let arrToTree = (nums) => {
+  function helper(l, r) {
+    // base case
+    if (l > r) return null;
+
+    let m = Math.round((l + r) / 2);
+    let root = new TreeNode(nums[m]);
+    root.left = helper(l, m - 1);
+    root.right = helper(m + 1, r);
+    return root;
+  }
+  return helper(0, nums.length - 1);
+};
+
+// Example 1046
+// last stone weight
+
+let lastStoneWeight = (stones) => {
+  while (stones.length > 1) {
+    let max1 = Math.max(...stones);
+    stones.splice(stones.indexOf(max1), 1);
+    let max2 = Math.max(...stones);
+    stones.splice(stones.indexOf(max2), 1);
+    if (max1 !== max2) stones.push(Math.abs(max1 - max2));
+  }
+  return stones[0] || 0;
+};
+
+// Q 35
+// search insert position
+
+// binary search
+let BinarySearch = (nums, target) => {
+  let l = 0;
+  let r = nums.length - 1;
+
+  while (l <= r) {
+    let m = Math.round((l + r) / 2);
+    if (nums[m] === target) {
+      return m;
+    }
+    if (target > m) {
+      l = m + 1;
+    } else {
+      r = m - 1;
+    }
+  }
+
+  return l;
+};
