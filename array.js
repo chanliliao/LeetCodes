@@ -449,6 +449,181 @@ let BinarySearch = (nums, target) => {
       r = m - 1;
     }
   }
-
   return l;
+};
+
+// Q953
+// verifiying an alian dict
+
+// binary search
+let verifyingAlienDict = (words, order) => {
+  let orderIdx = new Map();
+  for (let i = 0; i < order.length; i++) {
+    let char = order[i];
+    orderIdx.set(char, i);
+  }
+
+  for (let i = 0; i < words.length - 1; i++) {
+    let w1 = words[i];
+    let w2 = words[i + 1];
+
+    for (let j = 0; j < w1.length; j++) {
+      if (j == w2.length) {
+        return false;
+      }
+      if (w1[j] != w2[j]) {
+        if (orderIdx[w2[j]] < orderIdx[w1[j]]) {
+          return false;
+        }
+        break;
+      }
+    }
+  }
+  return true;
+};
+
+// Q88
+// merge Sorted Array
+
+// merge sort
+let merge = (nums1, m, nums2, n) => {
+  let idx1 = m - 1,
+    idx2 = n - 1,
+    idx3 = m + n - 1;
+  while (idx2 >= 0) {
+    nums1[idx3--] = nums1[idx1] > nums2[idx2] ? nums1[idx1--] : nums2[idx2--];
+  }
+};
+
+// Q189
+// rotate array
+
+let rotateArr = (nums) => {
+  for (let i = 0; i < k; i++) {
+    nums.unshift(nums.pop());
+  }
+};
+
+let rotateArr = (nums) => {
+  k = k % nums.length;
+  let left = 0;
+  let right = nums.length - 1;
+
+  reverse(left, right);
+  reverse(left, k - 1);
+  reverse(k, right);
+
+  function reverse(l, r) {
+    while (l < r) {
+      [nums[l], nums[r]] = [nums[r], nums[l]];
+      l++;
+      r--;
+    }
+  }
+  return nums;
+};
+
+// Q36
+// rotate array
+
+let validSudoku = (board) => {
+  for (let i = 0; i < 9; i++) {
+    let row = new Set(),
+      col = new Set(),
+      box = new Set();
+
+    for (let j = 0; j < 9; j++) {
+      let _row = board[i][j];
+      let _col = board[j][i];
+      let _box =
+        board[3 * Math.floor(i / 3) + Math.floor(j / 3)][3 * (i % 3) + (j % 3)];
+
+      if (_row != '.') {
+        if (row.has(_row)) return false;
+        row.add(_row);
+      }
+      if (_col != '.') {
+        if (col.has(_col)) return false;
+        col.add(_col);
+      }
+
+      if (_box != '.') {
+        if (box.has(_box)) return false;
+        box.add(_box);
+      }
+    }
+  }
+  return true;
+};
+
+// Q287
+// find the duplicate number
+
+let findDupNum = (nums) => {
+  let slow = nums[0];
+  let fast = nums[nums[0]];
+
+  while (slow != fast) {
+    // we are guaranteed to have a cycle
+    slow = nums[slow];
+    fast = nums[nums[fast]];
+  }
+
+  slow = 0;
+
+  while (slow != fast) {
+    slow = nums[slow];
+    fast = nums[fast];
+  }
+
+  return slow;
+};
+
+// Q128
+// longest consectueive sequence
+
+let lcs = (nums) => {
+  let set = new Set(nums);
+  let longest = 0;
+
+  for (let n of nums) {
+    if (!set.has(n - 1)) {
+      let len = 0;
+      while (set.has(n + len)) {
+        len++;
+      }
+      longest = Math.max(len, longest);
+    }
+  }
+  return longest;
+};
+
+// Q41
+// first missing pos
+
+let firstMissingPos = (nums) => {
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] < 0) {
+      nums[i] = 0;
+    }
+  }
+
+  for (let i = 0; i < nums.length; i++) {
+    val = Math.abs(nums[i]);
+    if (1 <= val && val <= nums.length) {
+      if (nums[val - 1] > 0) {
+        nums[val - 1] = -nums[val - 1];
+      }
+      if (nums[val - 1] === 0) {
+        nums[val - 1] = -1 * (nums.length + 1);
+      }
+    }
+  }
+
+  for (let i = 1; i < nums.length + 1; i++) {
+    if (nums[i - 1] >= 0) {
+      return i;
+    }
+  }
+  return nums.length + 1;
 };
