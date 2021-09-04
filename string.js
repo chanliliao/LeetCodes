@@ -487,3 +487,229 @@ var minWindow = function (s, t) {
   // T.C: O(N)
   // S.C: O(N)
 };
+
+// Extra
+
+// Q13
+// Roman to int
+
+const RomanInt = (s) => {
+  const map = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
+  let num = 0;
+
+  for (let i = 0; i < s.length; i++) {
+    const curr = map[s[i]],
+      next = map[s[i + 1]];
+    if (curr < next) num -= curr;
+    else num += curr;
+  }
+  return num;
+};
+
+// Q67
+// add binary
+
+const addBinary = (a, b) => {
+  let carry = 0;
+  let result = '';
+
+  let len1 = a.length - 1;
+  let len2 = b.length - 1;
+
+  for (; len1 >= 0 || len2 >= 0 || carry > 0; len1--, len2--) {
+    let sum = (+a[len1] || 0) + (+b[len2] || 0) + carry;
+    if (sum > 1) {
+      sum = sum % 2;
+      carry = 1;
+    } else {
+      carry = 0;
+    }
+    result = `${sum}${result}`;
+  }
+  return result;
+};
+
+// Q392
+// is subsequence
+
+const isSubsequence = (s, t) => {
+  let i = (j = 0);
+
+  while (i < s.length && j < t.length) {
+    if (s[i] === t[j]) {
+      i++;
+    }
+    j++;
+  }
+  return i === s.length ? true : false;
+};
+
+// Q392
+// is subsequence
+
+const isSubsequence = (s) => {
+  let dirX = 0;
+  let dirY = 1;
+  let x = 0;
+  let y = 0;
+
+  for (let d of s) {
+    if (d === 'G') {
+      x = x + dirX;
+      y = y + dirY;
+    } else if (d === 'L') {
+      [x, y] = [-y, x];
+    } else {
+      [x, y] = [y, -x];
+    }
+  }
+  return (!x && !y) || dir !== 1;
+};
+
+// Q17
+// letter combo of phone number
+
+const letterCombo = (s) => {
+  let res = [];
+  let map = {
+    2: 'abc',
+    3: 'def',
+    4: 'ghi',
+    5: 'jkl',
+    6: 'mno',
+    7: 'qprs',
+    8: 'tuv',
+    9: 'wxyz',
+  };
+  function backtracking(i, curStr) {
+    if (curStr.length === s.length) {
+      res.push(curStr);
+      return;
+    }
+    for (let c of map[s[i]]) {
+      backtracking(i + 1, curStr + c);
+    }
+  }
+
+  if (s) {
+    backtracking(0, '');
+  }
+  return res;
+};
+
+// Q22
+// generate paraentheses
+
+const generatParaenthses = (n) => {
+  let res = [];
+  let stack = [];
+  let open = 0;
+  let close = 0;
+
+  function backtrack(o, c) {
+    if (open === close && close === n) {
+      res.push(''.join(stack));
+    }
+    if (o < n) {
+      stack.push('(');
+      backtrack(o + 1, c);
+      stack.pop();
+    }
+    if (o > c) {
+      stack.push(')');
+      backtrack(o, c + 1);
+      stack.pop();
+    }
+  }
+  backtrack(open, close);
+  return res;
+};
+
+// Q
+// decode string
+
+const decodeString = (s) => {
+  let stack = [];
+
+  for (let c of s) {
+    if (c !== ']') {
+      stack.push(c);
+    } else {
+      let str = '';
+      while (stack[stack.length - 1] !== '[') {
+        str = stack.pop() + str;
+      }
+      stack.pop();
+
+      let k = '';
+      while (
+        stack.length != 0 &&
+        !Number.isNaN(Number(stack[stack.length - 1]))
+      ) {
+        k = stack.pop() + k;
+      }
+
+      k = Number(k);
+      stack.push(str.repeat(k));
+    }
+  }
+
+  return stack.join('');
+};
+
+// Q71
+// simplify path
+
+const simpPath = (s) => {
+  let stack = [];
+  path = path.split('/');
+  
+  for (let i=0;i<path.length;i++) {
+      if (path[i]=='.' || path[i]=='') continue;
+      if (path[i]=='..') stack.pop();
+      else stack.push(path[i]);
+  }
+  
+  return '/'+stack.join('/');
+};
+
+// Q71
+// muktiply strings
+
+const multipleyStrings = (s) => {
+  let z = [];
+  let hold = 0;
+  let totalLength = num1.length + num2.length;
+
+  if (num1 === '0' || num2 === '0') {
+      return '0';
+  }
+
+  if (num1 === '1' || num2 === '1') {
+      return num1 === '1'
+          ? num2
+          : num1;
+  }
+
+  num1 = num1.split('').reverse();
+  num2 = num2.split('').reverse();
+
+  for (let k = 0; k < totalLength; k++) {
+      for (let i = 0; i < num1.length; i++) {
+          let j = k - i;
+
+          if (num2[j]) {
+              hold = hold + (num1[i] * num2[j]);
+          }
+
+      }
+
+      if(k === totalLength -1 && hold === 0){
+          continue;
+      }
+
+      z[k] = hold % 10;
+      hold = Math.trunc(hold / 10);
+  }
+
+  return z.reverse().join('');
