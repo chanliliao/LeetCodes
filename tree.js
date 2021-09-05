@@ -1,21 +1,35 @@
 // Q104
 // Max Depth of binary tree
 
-// non-recurv
+// Iterative BFS
 var maxDepth = function (root) {
   if (!root) return 0;
   const queue = [root];
   let depth = 0;
   while (queue.length !== 0) {
     depth++;
-    const len = queue.length;
-    for (let i = 0; i < len; i++) {
-      if (queue[i].left) queue.push(queue[i].left);
-      if (queue[i].right) queue.push(queue[i].right);
+    for (let i = 0; i < queue.length; i++) {
+      let node = queue.shift();
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
-    queue.splice(0, len);
   }
   return depth;
+};
+
+// Iterative DFS preorder r, l ,r order
+var maxDepth = function (root) {
+  const stack = [[root, 1]];
+  let res = 0;
+  while (stack.length !== 0) {
+    let [node, depth] = stack.pop();
+    if (node) {
+      res = Math.max(res, depth);
+      stack.push([node.left, depth + 1]);
+      stack.push([node.right, depth + 1]);
+    }
+  }
+  return res;
 };
 // recurv
 var maxDepth = function (root) {
@@ -33,7 +47,7 @@ let sameTree = (p, q) => {
 
   return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
 };
-// non -recurv
+// iterative BFS
 let sameTree = (p, q) => {
   let queueOne = [p];
   let queueTwo = [q];
@@ -67,7 +81,7 @@ let sameTree = (p, q) => {
 
   return queueOne.length === 0 && queueTwo.length === 0;
 };
-// non -recurv ES6
+//iterative DFS
 let sameTree = (p, q) => {
   let stack = [[p, q]];
 
@@ -171,19 +185,24 @@ var lowestCommonAncestor = function (root, p, q) {
 // binary tree level order traversal
 // a
 // recursive
-function levelOrder(root, level = 0, result = []) {
-  if (root) {
-    // init subarray if it doesn't exist
-    let arr = (result[level] = result[level] || []);
-    arr.push(root.val);
+function levelOrder(root) {
+  const result = [];
 
-    levelOrder(root.left, level + 1, result);
-    levelOrder(root.right, level + 1, result);
+  function traverse(node, level) {
+    if (!node) return;
+
+    if (!result[level]) result[level] = [node.val];
+    else result[level].push(node.val);
+
+    traverse(node.left, level + 1);
+    traverse(node.right, level + 1);
   }
+
+  traverse(root, 0);
   return result;
 }
 
-// iterative
+// iterative BFS
 var levelOrder = function (root) {
   let q = [root],
     ans = [];
@@ -211,7 +230,7 @@ var buildTree = function (preorder, inorder) {
   return { val: preorder[0], left, right };
 };
 
-// iterative
+// iterative DFS
 var isValidBST = function (root) {
   let stack = [];
   let inorder = Number.NEGATIVE_INFINITY;
@@ -240,11 +259,13 @@ var isValidBST = function (root) {
 };
 
 // recurve
-var isValidBST = function (root, min = null, max = null) {
-  if (!root) return true;
-  if (min && root.val <= min.val) return false;
-  if (max && root.val >= max.val) return false;
-  return isValidBST(root.left, min, root) && isValidBST(root.right, root, max);
+var isValidBST = function (root, min = -Infinity, max = Infinity) {
+  if (root === null) return true;
+  if (root.val <= min || root.val >= max) return false;
+  return (
+    isValidBST(root.right, root.val, max) &&
+    isValidBST(root.left, min, root.val)
+  );
 };
 
 // Q 230.
@@ -275,36 +296,23 @@ var kthSmallest = function (root, k) {
   }
 };
 
-// Q124
-// Binary Tree maximum path sum
-// A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.
-// The path sum of a path is the sum of the node's values in the path.
-// Given the root of a binary tree, return the maximum path sum of any path.
-// Example 1:
-// Input: root = [1,2,3]
-// Output: 6
-// Explanation: The optimal path is 2 -> 1 -> 3 with a path sum of 2 + 1 + 3 = 6.
-// Example 2:
-// Input: root = [-10,9,20,null,null,15,7]
-// Output: 42
-// Explanation: The optimal path is 15 -> 20 -> 7 with a path sum of 15 + 20 + 7 = 42.
-
-// The Idea
-// Use DFS
-// If a branch's maximum sum is negative, we will never consider that route so we set it to 0
-// Right before we backtrack, calculate the global maximum sum
-// For the backtrack value, we return the current route's max sum
-var maxPathSum = function (root) {
-  let max = -Infinity;
-  var recur = function (node) {
-    if (node == null) return 0;
-    let left = Math.max(0, recur(node.left)); // negative sums will just be ignored
-    let right = Math.max(0, recur(node.right));
-    max = Math.max(left + right + node.val, max); // calculate the global max
-    return Math.max(left, right) + node.val; // return current route's best sum
-  };
-  recur(root);
-  return max;
+// iteravtily stack DFS inroder
+var kthSmallest = function (root, k) {
+  let n = 0;
+  let stack = [];
+  let curr = root;
+  while (curr && stack) {
+    while (curr) {
+      stack.push(curr);
+      curr = curr.left;
+    }
+    curr = stack.pop();
+    n += 1;
+    if (n === k) {
+      return curr.val;
+    }
+    curr = curr.right;
+  }
 };
 
 // Q208
@@ -423,6 +431,22 @@ WordDictionary.prototype.dfs = function (word, index, node) {
  * obj.addWord(word)
  * var param_2 = obj.search(word)
  */
+
+// Q124
+// Binary Tree maximum path sum
+
+var maxPathSum = function (root) {
+  let max = -Infinity;
+  var recur = function (node) {
+    if (node == null) return 0;
+    let left = Math.max(0, recur(node.left)); // negative sums will just be ignored
+    let right = Math.max(0, recur(node.right));
+    max = Math.max(left + right + node.val, max); // calculate the global max
+    return Math.max(left, right) + node.val; // return current route's best sum
+  };
+  recur(root);
+  return max;
+};
 
 // Q297
 // Serialize and deserialize Binary tree
