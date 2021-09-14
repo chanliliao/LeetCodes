@@ -133,21 +133,6 @@ let productExceptSelf1 = (nums) => {
   });
 };
 
-let productExceptSelf2 = (nums) => {
-  // O(1) space
-  let result = [1],
-    right = 1;
-  for (let i = 1; i < nums.length; i++) {
-    result.push(result[i - 1] * nums[i - 1]);
-  }
-
-  for (let i = nums.length - 1; i >= 0; i--) {
-    result[i] = result[i] * right;
-    right *= nums[i];
-  }
-  return result;
-};
-
 let productExceptSelf3 = (nums) => {
   // recursive
   function recurseProd(i = 0, leftProd = 1) {
