@@ -143,7 +143,6 @@ const numIslands = (grid) => {
       }
     }
   }
-  ('ㄥ');
   return Islands;
 };
 
@@ -156,8 +155,13 @@ function sink(grid, i, j, rows, cols) {
   grid[i][j] = 0;
 
   //Possibilites:
-  sink(grid, i, j - 1, row, cols);
-  sink(grid, i, j + 1, row, cols);
-  sink(grid, i - 1, j, row, cols);
-  sink(grid, i + 1, j, row, cols);
+  sink(grid, i, j - 1, rows, cols);
+  sink(grid, i, j + 1, rows, cols);
+  sink(grid, i - 1, j, rows, cols);
+  sink(grid, i + 1, j, rows, cols);
 }
+
+// Q261
+// graph valid tree
+
+const validTree = (n, edges) => {};

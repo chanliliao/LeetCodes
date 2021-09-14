@@ -84,3 +84,93 @@ def pacificAtlantic(heights):
       if (r,c) in pac and (r,c) in atl:
         res.append([r,c])
   return res
+
+# Q200
+# number of islands
+
+def numIslands(self, grid):
+  island, rows, cols = 0, len(grid), len(grid[0])
+
+  for i in range(rows):
+    for j in range(cols):
+        if grid[i][j] == '1':
+          self.sink(grid,i,j,rows,cols)
+          island += 1
+
+  return island
+        
+def sink(self, grid, i, j, rows, cols):
+  if i < 0 or j < 0 or i >= rows or j >= cols or grid[i][j] == 0:
+    return 
+  grid[i][j] = 0
+  self.sink(grid, i, j - 1, rows, cols)
+  self.sink(grid, i, j + 1, rows, cols)
+  self.sink(grid, i - 1, j, rows, cols)
+  self.sink(grid, i + 1, j, rows, cols)
+
+
+# Q261
+# graph valid tree
+
+def validTree(n, edges):
+  if not n:
+    return True
+
+  # create adj list
+  adj = {i:[] for i in range(n)}
+  for n1,n2 in edges:
+    adj[n1].append(n2)
+    adj[n2].append(n1)
+
+  visited = set()
+
+  def dfs(i, prev):
+    if i in visited:
+      return False
+    
+    visited.add(i)
+    for j in adj[i]:
+      if j == prev:
+        continue
+      if not dfs(i,j):
+        return False
+    return True
+
+  return dfs(0,-1) and n == len(visited)
+
+
+# Q323
+#  Num of connected compoent in an undirected graph
+def countComponents(n, edges):
+  # parent array to see which nodes parents 
+  # rank array keep track of how many nodes under parent node
+  par = [i for i in range(n)]
+  rank = [1] * n
+
+  # look for the parent node
+  def find(n1):
+    res = n1
+    while res != par[res]:
+      # optimzation 
+      par[res] = par[par[res]]
+      res = par[res]
+    return res
+
+  # union the nodes base on the parent node and update the arrays
+  def union(n1, n2):
+    p1, p2 = find(n1), find(n2)
+    if p1 == p2:
+      return 0
+    if rank[p2] > rank[p1]:
+      par[p1] =p2
+      rank[p2] += rank[p1]
+    else:
+      par[p2] = p1
+      rank[p1] += rank[p2]
+    return 1
+
+  res =n 
+  # loop through the nodes in edges
+  for n1, n2 in edges:
+    res -= union(n1,n2)
+  return res
