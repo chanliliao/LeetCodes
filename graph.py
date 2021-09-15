@@ -174,3 +174,37 @@ def countComponents(n, edges):
   for n1, n2 in edges:
     res -= union(n1,n2)
   return res
+
+
+# Q 1466
+# Reoder routes
+
+def reorderRoutes(n , connections):
+  # start at city 0
+  # recusively check its neighbors
+  # coutn outgoing edges
+  edges = {(a,b) for a,b, in connections}
+  neighbors = {city:[] for city in range(n)}
+  visited = set()
+  changes = 0
+
+  # fill neighbors/ adj list
+  for a, b in connections:
+    neighbors[a].append(b)
+    neighbors[b].append(a)
+
+  def dfs(city):
+    nonlocal edges, neigbhors, visit, change
+
+    for neighbor in neighbors[city]:
+      if neighbor in vitited:
+        continue
+      # check if this neighbor can reach city 0
+      if(neighbor, city) not in edges:
+        changes += 1
+      visited.add(neighbor)
+      dfs(neighbor)
+
+  visited.add(0)
+  dfs(0)
+  return changes
