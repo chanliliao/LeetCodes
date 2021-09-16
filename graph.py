@@ -140,7 +140,9 @@ def validTree(n, edges):
 
 
 # Q323
-#  Num of connected compoent in an undirected graph
+# Num of connected compoent in an undirected graph
+# union Find
+
 def countComponents(n, edges):
   # parent array to see which nodes parents 
   # rank array keep track of how many nodes under parent node
@@ -175,6 +177,7 @@ def countComponents(n, edges):
     res -= union(n1,n2)
   return res
 
+# Extra
 
 # Q 1466
 # Reoder routes
@@ -208,3 +211,36 @@ def reorderRoutes(n , connections):
   visited.add(0)
   dfs(0)
   return changes
+
+# Q684
+#  Redundant connection
+
+def redundantConnection(edges):
+  par = [i for i in range(len(edges)+1)]
+  rank = [1] * n
+
+  # look for the parent node
+  def find(n1):
+    res = n1
+    while res != par[res]:
+      # optimzation 
+      par[res] = par[par[res]]
+      res = par[res]
+    return res
+
+  # union the nodes base on the parent node and update the arrays
+  def union(n1, n2):
+    p1, p2 = find(n1), find(n2)
+    if p1 == p2:
+      return False
+    if rank[p2] > rank[p1]:
+      par[p1] =p2
+      rank[p2] += rank[p1]
+    else:
+      par[p2] = p1
+      rank[p1] += rank[p2]
+    return True
+
+  for n1, n2 in edges:
+    if not union(n1,n2)
+      return [n1,n2]
