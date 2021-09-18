@@ -27,9 +27,12 @@ map.size();
 map.has(key);
 map.keys();
 map.values();
-for (const [key, value] of map) {}
-for (const key of map.keys()) {}
-for (const value of map.values()) {}
+for (const [key, value] of map) {
+}
+for (const key of map.keys()) {
+}
+for (const value of map.values()) {
+}
 
 // Set
 let set = new Set();
@@ -71,11 +74,3 @@ styleSheet.type = 'text/css';
 styleSheet.innerText = styles;
 document.head.appendChild(styleSheet);
 let styles = ``;
-// create the event to click
-let evt = new MouseEvent('click', {
-  view: window,
-  bubbles: true,
-  cancelable: true,
-});
-// activate the click
-cartButton.dispatchEvent(evt);
