@@ -52,7 +52,7 @@ def canFinish(numCourses, prereq):
   return True
 
 # Q417
-# course schedule
+# pacificAtlantic 
 def pacificAtlantic(heights):
   # define rows and cols and the sets 
   ROW,COL = len(heights), len(heights[0])
@@ -242,5 +242,74 @@ def redundantConnection(edges):
     return True
 
   for n1, n2 in edges:
-    if not union(n1,n2)
+    if not union(n1,n2):
       return [n1,n2]
+
+# Q743
+# Network Delay Time
+
+def delayTime(times,n,k):
+  # create a hashmap
+  edges = collections.defaultdict(list)
+  for u,v,w in times:
+    edges[u].append((v,w))
+
+  minHeap=[(0,k)]
+  visit = set()
+  t = 0
+  while minHeap:
+    # grab the min data weight and node
+    w1, n1 = heapq.heapop(minHeap)
+    # check if node is visited or not
+    if n1 in visit:
+      continue
+    # if not add it to set
+    visit.add(n1)
+    # find out the weight of time and pick the biggest
+    t = max(t,w1)
+
+    # loop through all the node BFS
+    for n2, w2 in edges[n1]:
+      # if not visited push to the heap 
+      if n2 not in visit:
+        heapq.heappush(minHeap,(w1+w2,n2))
+
+  return t if len(visit) == n  else -1
+    
+# Q210
+# course sechedule II
+
+def courseSchedule(n,pq):
+  # create adj list
+  prereq = {c:[] for c in range(n)}
+  for crs, pre in pq:
+    prereq[crs].append(pre)
+
+  # a course has 3 possible states:
+  # visited --> crs has been added to output
+  # visiting --> crs not added to out but addle to cycle
+  # unvisited --> crs not added to output or cycle
+  output=[]
+  visit, cycle = set(), set()
+  def dfs(crs):
+    # cycle detection first
+    if crs in cycle:
+        return False
+    if crs in visit:
+      return True
+    # when is visted, add to visiting
+    cycle.add(crs)
+    # dfs looking ne prereqs
+    for pre in prereq[crs]:
+      if dfs(pre) == False:
+        return False
+    # update the sets and result
+    cycle.remove(crs)
+    visit.add(crs)
+    output.append(crs)
+    return True
+
+  for c in range(n):
+    if dfs(c) == False:
+      return []
+  return output
