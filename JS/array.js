@@ -61,12 +61,12 @@ let maxProfit1 = (prices) => {
 // using set
 let containsDuplicate = (nums) => {
   // t=O(n), s=O(n)
-  let map = new Set();
+  let set = new Set();
   for (const num of nums) {
-    if (map.has(num)) {
+    if (set.has(num)) {
       return true;
     } else {
-      map.add(num);
+      set.add(num);
     }
   }
   return false;
@@ -333,22 +333,6 @@ const replaceEle = (arr) => {
 };
 
 // Example 121
-// Best Time to Buy and Sell Stock II
-
-// two pointer
-let maxProfit = (prices) => {
-  let profit = 0;
-
-  for (let i = 0; i < prices.length; i++) {
-    if (prices[i] < prices[i + 1]) {
-      profit += prices[i + 1] - prices[i];
-    }
-  }
-
-  return profit;
-};
-
-// Example 121
 // pascal triangle
 
 // DP
@@ -428,7 +412,7 @@ let BinarySearch = (nums, target) => {
     if (nums[m] === target) {
       return m;
     }
-    if (target > m) {
+    if (target > nums[m]) {
       l = m + 1;
     } else {
       r = m - 1;
@@ -445,7 +429,7 @@ let verifyingAlienDict = (words, order) => {
   let orderIdx = new Map();
   for (let i = 0; i < order.length; i++) {
     let char = order[i];
-    orderIdx.set(char, i);
+    orderIdx[char] = i;
   }
 
   for (let i = 0; i < words.length - 1; i++) {
@@ -478,6 +462,22 @@ let merge = (nums1, m, nums2, n) => {
   while (idx2 >= 0) {
     nums1[idx3--] = nums1[idx1] > nums2[idx2] ? nums1[idx1--] : nums2[idx2--];
   }
+};
+
+// Example 121
+// Best Time to Buy and Sell Stock II
+
+// two pointer
+let maxProfit = (prices) => {
+  let profit = 0;
+
+  for (let i = 0; i < prices.length; i++) {
+    if (prices[i] < prices[i + 1]) {
+      profit += prices[i + 1] - prices[i];
+    }
+  }
+
+  return profit;
 };
 
 // Q189
