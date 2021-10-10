@@ -36,16 +36,16 @@ let reverseLL = (head) => {
 let reverseLL = (head) => {
   if (head === null) return null;
   let previous = null;
-  let next = null;
+  let temp = null;
 
   while (head) {
     // save next
-    next = head.next;
+    temp = head.next;
     // reverse
     head.next = previous;
     // move prev and head
     previous = head;
-    head = next;
+    head = temp;
   }
   return previous;
 };
@@ -253,16 +253,9 @@ const middleLL = (head) => {
   return slow;
 };
 
-// Q237 delete ndoe in LL
-// middle of the LL
+// Q237
+// delete ndoe in LL
 const deleteLL = (node) => {
-  node.val = node.next.val;
-  node.next = node.next.next;
-};
-
-// Q237 delete ndoe in LL
-// middle of the LL
-const removeDup = (node) => {
   node.val = node.next.val;
   node.next = node.next.next;
 };
@@ -311,6 +304,7 @@ let palindromeLL = (head) => {
       head = head.next;
     }
   }
+  return true;
 
   function split(h) {
     let slow = (fast = h);

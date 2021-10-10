@@ -20,7 +20,7 @@ String(1);
 
 // Map
 let map = new Map();
-map.set(key, value);-> map[key] = value
+map.set(key, value); //-> map[key] = value
 map.get(key);
 map.delete(key);
 map.size();

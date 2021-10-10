@@ -217,9 +217,9 @@ let isPalindrome7 = (s) => {
 let isValid = (s) => {
   // const stack = [];
   // const map = {
-  //   ')': '(',
-  //   ']': '[',
-  //   '}': '{',
+  // '(': ')',
+  // '[': ']',
+  // '{': '}'
   // };
 
   // for (let i = 0; i < s.length; i++) {
@@ -544,10 +544,10 @@ const isSubsequence = (s, t) => {
   return i === s.length ? true : false;
 };
 
-// Q392
-// is subsequence
+// Q
+// robot bounded in circle
 
-const isSubsequence = (s) => {
+const robotCircle = (s) => {
   let dirX = 0;
   let dirY = 1;
   let x = 0;

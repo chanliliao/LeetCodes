@@ -6,7 +6,7 @@ from typing import Collection
 
 
 def diameterTree(node):
-  res = [][0]
+  res =[0]
 
   def dfs(root):
     if not root:
@@ -19,7 +19,7 @@ def diameterTree(node):
     return 1 + max(left,right)
 
   dfs(node)
-  return res[o]
+  return res[0]
 
 # Q617
 # merge two binary tree

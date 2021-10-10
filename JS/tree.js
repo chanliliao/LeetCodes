@@ -4,32 +4,31 @@
 // Iterative BFS
 var maxDepth = function (root) {
   if (!root) return 0;
-  const queue = [root];
-  let depth = 0;
-  while (queue.length !== 0) {
-    depth++;
-    for (let i = 0; i < queue.length; i++) {
+  let queue = [root];
+  let max = 0;
+  while (queue.length > 0) {
+    let len = queue.length;
+    max++;
+    for (let i = 0; i < len; i++) {
       let node = queue.shift();
       if (node.left) queue.push(node.left);
       if (node.right) queue.push(node.right);
     }
   }
-  return depth;
+  return max;
 };
 
 // Iterative DFS preorder r, l ,r order
 var maxDepth = function (root) {
-  const stack = [[root, 1]];
-  let res = 0;
-  while (stack.length !== 0) {
-    let [node, depth] = stack.pop();
-    if (node) {
-      res = Math.max(res, depth);
-      stack.push([node.left, depth + 1]);
-      stack.push([node.right, depth + 1]);
-    }
+  let max = 0;
+  function dfs(node, level) {
+    if (!node) return;
+    if (level > max) max = level;
+    dfs(node.left, level + 1);
+    dfs(node.right, level + 1);
   }
-  return res;
+  dfs(root, 1);
+  return max;
 };
 // recurv
 var maxDepth = function (root) {
@@ -49,55 +48,23 @@ let sameTree = (p, q) => {
 };
 // iterative BFS
 let sameTree = (p, q) => {
-  let queueOne = [p];
-  let queueTwo = [q];
+  let queue = [[p, q]];
 
-  while (queueOne.length && queueTwo.length) {
-    const currOne = queueOne.shift();
-    const currTwo = queueTwo.shift();
-
-    if (currOne && currTwo && currOne.val !== currTwo.val) {
-      return false;
-    }
-
-    if (currOne && !currTwo) {
-      return false;
-    }
-
-    if (currTwo && !currOne) {
-      return false;
-    }
-
-    if (currOne) {
-      queueOne.push(currOne.left);
-      queueOne.push(currOne.right);
-    }
-
-    if (currTwo) {
-      queueTwo.push(currTwo.left);
-      queueTwo.push(currTwo.right);
-    }
-  }
-
-  return queueOne.length === 0 && queueTwo.length === 0;
-};
-//iterative DFS
-let sameTree = (p, q) => {
-  let stack = [[p, q]];
-
-  while (stack.length) {
-    let [x, y] = stack.shift();
+  while (queue.length) {
+    let [x, y] = queue.shift();
 
     // if both leaves
     if (x == null && y == null) continue;
     if (!x || !y) return false;
     if (x.val == y.val) {
-      stack.push([x.left, y.left]);
-      stack.push([x.right, y.right]);
+      queue.push([x.left, y.left]);
+      queue.push([x.right, y.right]);
     } else return false;
   }
   return true;
 };
+//iterative DFS
+let sameTree = (p, q) => {};
 
 // Q226
 // invert Binary Tree
@@ -148,7 +115,9 @@ var isSubtree = function (s, t) {
 };
 
 function isEqual(root1, root2) {
+  // if one is null, both have to be null
   if (!root1 || !root2) return !root1 && !root2;
+  // at this point both node have sth so need to check val
   if (root1.val !== root2.val) return false;
   return isEqual(root1.left, root2.left) && isEqual(root1.right, root2.right);
 }
