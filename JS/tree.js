@@ -20,15 +20,18 @@ var maxDepth = function (root) {
 
 // Iterative DFS preorder r, l ,r order
 var maxDepth = function (root) {
-  let max = 0;
-  function dfs(node, level) {
-    if (!node) return;
-    if (level > max) max = level;
-    dfs(node.left, level + 1);
-    dfs(node.right, level + 1);
+  let stack = [[root, 1]];
+  let ans = 0;
+  while (stack.length) {
+    let [node, depth] = stack.pop();
+
+    if (!node) {
+      ans = Math.max(ans, depth);
+      stack.push([node.left, depth + 1]);
+      stack.push([node.right, depth + 1]);
+    }
   }
-  dfs(root, 1);
-  return max;
+  return ans;
 };
 // recurv
 var maxDepth = function (root) {
@@ -63,8 +66,6 @@ let sameTree = (p, q) => {
   }
   return true;
 };
-//iterative DFS
-let sameTree = (p, q) => {};
 
 // Q226
 // invert Binary Tree
@@ -112,15 +113,15 @@ function invertTree(root) {
 var isSubtree = function (s, t) {
   if (!s) return !t;
   return isEqual(s, t) || isSubtree(s.left, t) || isSubtree(s.right, t);
-};
 
-function isEqual(root1, root2) {
-  // if one is null, both have to be null
-  if (!root1 || !root2) return !root1 && !root2;
-  // at this point both node have sth so need to check val
-  if (root1.val !== root2.val) return false;
-  return isEqual(root1.left, root2.left) && isEqual(root1.right, root2.right);
-}
+  function isEqual(root1, root2) {
+    // if one is null, both have to be null
+    if (!root1 || !root2) return !root1 && !root2;
+    // at this point both node have sth so need to check val
+    if (root1.val !== root2.val) return false;
+    return isEqual(root1.left, root2.left) && isEqual(root1.right, root2.right);
+  }
+};
 
 // Q235
 // LCA of a BSTc

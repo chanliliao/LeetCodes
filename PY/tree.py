@@ -6,9 +6,11 @@ from typing import Collection
 
 
 def diameterTree(node):
+  # diameter
   res =[0]
 
   def dfs(root):
+    # returns height, null node conside -1 base node is 0 height
     if not root:
       return -1
     left = dfs(root.left)
@@ -16,6 +18,7 @@ def diameterTree(node):
     # equation for diameter
     res[0] = max(res[0], 2 + right + left)
     # equation for height
+    # at base case left and right would be 0 and root would be 1
     return 1 + max(left,right)
 
   dfs(node)
@@ -46,7 +49,7 @@ def balanceBT(root):
       return [True,0]
     
     left, right = dfs(root.left), dfs(root.right)
-    balance = (left[0] and right[0] and abs(left[1] - right) <= 1)
+    balance = (left[0] and right[0] and abs(left[1] - right[1]) <= 1)
 
     return [balance, 1 + max(left[1],right[1])]
   

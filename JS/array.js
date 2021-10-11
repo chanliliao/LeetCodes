@@ -175,11 +175,12 @@ let findMin = (nums) => {
 
   while (left <= right) {
     if (nums[left] < nums[right]) {
-      res = min(res, nums[left]);
+      res = Math.min(res, nums[left]);
       break;
     }
-    let pivot = (right + left) / 2;
-    if (nums[pivot] >= nums[0]) {
+    let pivot = Math.floor((right + left) / 2);
+    res = Math.min(res, nums[pivot]);
+    if (nums[m] > nums[l]) {
       left = pivot + 1;
     } else {
       right = pivot - 1;
@@ -227,7 +228,7 @@ let search = (nums, target) => {
       }
     }
   }
-
+  c;
   return -1;
 };
 
@@ -284,15 +285,12 @@ let threeSum = (nums) => {
         // move j and k inward
         j++;
         k--;
-        continue;
       }
       if (sum < target) {
         j++;
-        continue;
       }
       if (sum > target) {
         k--;
-        continue;
       }
     }
   }
