@@ -290,30 +290,6 @@ let longestPalindrome = (s) => {
   return max;
 };
 
-let longestPalindrome = (s) => {
-  // using bubble sortcc
-  let maxPal = '';
-
-  for (let i = 0; i < s.length; i++) {
-    bubble(i, i); // odd palindrome
-    bubble(i, i + 1); // even palindrome
-  }
-
-  function bubble(left, right) {
-    while (left >= 0 && s[left] === s[right]) {
-      left--;
-      right++;
-    }
-    left++;
-    right--;
-
-    if (maxPal.length < right - left + 1) {
-      maxPal = s.slice(left, right + 1);
-    }
-  }
-  return maxPal;
-};
-
 // Q647
 // palindromic substrings
 
@@ -399,16 +375,14 @@ const characterReplacement = (s, k) => {
 
 // O(N)
 const characterReplacement = (s, k) => {
-  let count = new Map();
+  let count = {};
   let res = 0;
   let l = 0;
-
-  let maxf = 0;
+  let maxF = 0;
   for (let r = 0; r < s.length; r++) {
-    let temp = 1 + count.get(s[r]) || 0;
-    count.set(s[r], temp);
-    maxf = Math.max(maxf, count[s[r]]);
-    while (r - l + 1 - maxf > k) {
+    count[s[r]] = count[s[r]] ? ++count[s[r]] : 1;
+    maxF = Math.max(maxF, count[s[r]]);
+    while (r - l + 1 - maxF > k) {
       count[s[l]]--;
       l++;
     }
@@ -558,12 +532,12 @@ const robotCircle = (s) => {
       x = x + dirX;
       y = y + dirY;
     } else if (d === 'L') {
-      [x, y] = [-y, x];
+      [dirX, dirY] = [-dirY, dirX];
     } else {
-      [x, y] = [y, -x];
+      [dirX, dirY] = [dirY, -dirX];
     }
   }
-  return (!x && !y) || dir !== 1;
+  return (!x && !y) || dirY !== 1;
 };
 
 // Q17
@@ -608,7 +582,7 @@ const generatParaenthses = (n) => {
 
   function backtrack(o, c) {
     if (open === close && close === n) {
-      res.push(''.join(stack));
+      res.push(stack.join(''));
     }
     if (o < n) {
       stack.push('(');
@@ -625,7 +599,7 @@ const generatParaenthses = (n) => {
   return res;
 };
 
-// Q
+// Q394
 // decode string
 
 const decodeString = (s) => {
@@ -636,9 +610,11 @@ const decodeString = (s) => {
       stack.push(c);
     } else {
       let str = '';
+      // pop the letters
       while (stack[stack.length - 1] !== '[') {
         str = stack.pop() + str;
       }
+      // pop the opening bracket
       stack.pop();
 
       let k = '';
@@ -665,8 +641,11 @@ const simpPath = (s) => {
   path = path.split('/');
 
   for (let i = 0; i < path.length; i++) {
+    // stays at current directory
     if (path[i] == '.' || path[i] == '') continue;
+    // go back to the prev directory
     if (path[i] == '..') stack.pop();
+    // go into the new directory
     else stack.push(path[i]);
   }
 

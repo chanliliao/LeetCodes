@@ -28,7 +28,7 @@ def canFinish(numCourses, prereq):
   # map each course to prereq list
   preMap = {i:[] for i in range(numCourses)}
   for crs, pre in prereq:
-    preMap[crs].append[pre]
+    preMap[crs].append(pre)
   
   # visitedset  = all course along the curr dfs path
   visitSet = set()

@@ -180,7 +180,7 @@ let findMin = (nums) => {
     }
     let pivot = Math.floor((right + left) / 2);
     res = Math.min(res, nums[pivot]);
-    if (nums[m] > nums[l]) {
+    if (nums[m] >= nums[l]) {
       left = pivot + 1;
     } else {
       right = pivot - 1;

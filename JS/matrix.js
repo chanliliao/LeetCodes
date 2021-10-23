@@ -11,8 +11,8 @@ const numIslands = (grid) => {
   let cols = grid[0].length;
 
   // loop through grid
-  for (let i = 0; i < rows - 1; i++) {
-    for (let j = 0; j < cols - 1; j++) {
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
       if (grid[i][j] === 1) {
         // sink the islands
         sink(grid, i, j, rows, cols);
@@ -49,8 +49,8 @@ var maxAreaOfIsland = function (grid) {
   let cols = grid[0].length;
 
   // loop through grid
-  for (let i = 0; i < rows - 1; i++) {
-    for (let j = 0; j < cols - 1; j++) {
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
       if (grid[i][j] === 1) {
         // get area of island
         let area = getArea(grid, i, j, row, cols);
@@ -84,8 +84,8 @@ var numDistinctIslands = function (grid) {
   let cols = grid[0].length;
 
   // loop through grid
-  for (let i = 0; i < rows - 1; i++) {
-    for (let j = 0; j < cols - 1; j++) {
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
       if (grid[i][j] === 1) {
         // get area of island
         let path = computePath(grid, i, j, rows, cols, 'X');
@@ -166,8 +166,8 @@ var maxGold = function (grid) {
   let cols = grid[0].length;
 
   // loop through grid
-  for (let i = 0; i < rows - 1; i++) {
-    for (let j = 0; j < cols - 1; j++) {
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
       if (grid[i][j] !== 0) {
         let gold = findMaxGold(grid, i, j, row, cols);
         max = Math.max(max, gold);

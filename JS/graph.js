@@ -6,13 +6,16 @@ const cloneGraph = (node) => {
     return null;
   }
   const map = new Map();
-  const clone = (root) => {
+
+  function clone(root) {
     if (!map.has(root.val)) {
-      map.set(root.val, new Node(root.val));
-      map.get(root.val).neighbors = root.neighbors.map(clone);
+      let newCopy = new Node(root.val);
+      map.set(root.val, newCopy);
+      let copy = map.get(root.val);
+      copy.neighbors = root.neighbors.map(clone);
     }
     return map.get(root.val);
-  };
+  }
   return clone(node);
 };
 
@@ -20,55 +23,42 @@ const cloneGraph = (node) => {
 // course schedule
 
 const canFinish = (numCourses, preReq) => {
-  graph = new Map();
-  visiting = new Set();
   visited = new Set();
-
-  for (let [v, e] of prerequisites) {
-    if (graph.has(v)) {
-      let edges = graph.get(v);
-      edges.push(e);
-      graph.set(v, edges);
-    } else {
-      graph.set(v, [e]);
-    }
+  let adj = {};
+  for (var i = 0; i < numCourses; i++) {
+    adj[i] = [];
   }
 
-  for (const [v, e] of graph) {
-    if (DFS(v)) {
-      return false; //if cyclic it will not finish so it is false
-    }
+  for (var preq of prereq) {
+    adj[preq[0]].push(preq[1]);
   }
 
-  function DFS(v) {
-    visiting.add(v);
-    let edges = graph.get(v); // get all the edges to explore
+  function dfs(v) {
+    if (visited.has(v)) {
+      return false;
+    }
 
-    if (edges) {
-      //console.log(edges)
-      for (let e of edges) {
-        if (visited.has(e)) {
-          //skip if it is explored already
-          continue;
-        }
+    if (adj[v] === []) {
+      return false;
+    }
 
-        if (visiting.has(e)) {
-          //found e is being explored
-          return true;
-        }
+    visited.add(v);
 
-        if (DFS(e)) {
-          // DFS deeper if this e is cyclic
-          return true;
-        }
+    for (let pre of adj[v]) {
+      if (!dfs(pre)) {
+        return false;
       }
     }
-
-    visiting.delete(v); // remove from visiting set when all decedant v are visited
-    visited.add(v);
-    return false;
+    visited.delete(v);
+    adj[v] = [];
+    return true;
   }
 
+  for (let crs = 0; crs < numCourses; crs++) {
+    if (!dfs(crs)) {
+      return false;
+    }
+  }
   return true;
 };
 
@@ -134,8 +124,8 @@ const numIslands = (grid) => {
   let cols = grid[0].length;
 
   // loop through grid
-  for (let i = 0; i < rows - 1; i++) {
-    for (let j = 0; j < cols - 1; j++) {
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
       if (grid[i][j] === 1) {
         // sink the islands
         sink(grid, i, j, rows, cols);
@@ -165,3 +155,39 @@ function sink(grid, i, j, rows, cols) {
 // graph valid tree
 
 const validTree = (n, edges) => {};
+
+//  Q261
+//  graph valid tree
+
+var validTree = function (n, edges) {
+  if (n < 2) return true;
+  var adj = {};
+
+  // Initalize adjacency list
+  for (var i = 0; i < n; i++) {
+    adj[i] = [];
+  }
+
+  // Populate adjacency list
+  for (var edge of edges) {
+    adj[edge[0]].push(edge[1]);
+    adj[edge[1]].push(edge[0]);
+  }
+
+  // Check if there are cycles
+  var visited = new Set();
+
+  function dfs(i, prev) {
+    if (visited.has(i)) return false;
+
+    visited.add(i);
+    for (let j of adj[i]) {
+      if (j === prev) {
+        continue;
+      }
+      if (!dfs(j, i)) return false;
+    }
+    return true;
+  }
+  return dfs(0, -1) && n == visited.size;
+};

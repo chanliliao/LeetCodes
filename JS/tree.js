@@ -174,9 +174,10 @@ function levelOrder(root) {
 
 // iterative BFS
 var levelOrder = function (root) {
+  if (!root) return [];
   let q = [root],
     ans = [];
-  while (q[0]) {
+  while (q.length > 0) {
     let qlen = q.length,
       row = [];
     for (let i = 0; i < qlen; i++) {
@@ -194,10 +195,13 @@ var levelOrder = function (root) {
 //binary tree from preorder to inorder traversal
 var buildTree = function (preorder, inorder) {
   if (!preorder.length) return null;
-  const index = inorder.indexOf(preorder[0]);
-  const left = buildTree(preorder.slice(1, index + 1), inorder.slice(0, index));
-  const right = buildTree(preorder.slice(index + 1), inorder.slice(index + 1));
-  return { val: preorder[0], left, right };
+  let root = preorder[0];
+  const mid = inorder.indexOf(root);
+  let newNode = new TreeNode(root);
+  newNode.left = buildTree(preorder.slice(1, mid + 1), inorder.slice(0, mid));
+  newNode.right = buildTree(preorder.slice(mid + 1), inorder.slice(mid + 1));
+
+  return newNode;
 };
 
 // iterative DFS

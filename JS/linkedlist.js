@@ -162,16 +162,12 @@ let reorderList = (head) => {
 };
 
 let split = (node) => {
-  let fast = node;
+  let fast = node.next;
   let slow = node;
 
-  while (fast !== null) {
-    if (fast.next !== null && fast.next.next !== null) {
-      slow = slow.next;
-      fast = fast.next.next;
-    } else {
-      fast = null;
-    }
+  while (fast !== null && fast.next !== null) {
+    slow = slow.next;
+    fast = fast.next.next;
   }
 
   const secondHalf = slow.next;
@@ -215,14 +211,19 @@ let merge = (l1, l2) => {
 // Remove nth node from end of list
 
 let removeNthFromEnd = (head, n) => {
-  // two pointer one moving n ahead
-  let fast = head,
-    slow = head;
-  for (let i = 0; i < n; i++) fast = fast.next;
-  if (!fast) return head.next;
-  while (fast.next) (fast = fast.next), (slow = slow.next);
+  let dummy = new ListNode(0, head);
+  let slow = dummy;
+  let fast = head;
+  while (n > 0 && fast) {
+    fast = fast.next;
+    n--;
+  }
+  while (fast) {
+    slow = slow.next;
+    fast = fast.next;
+  }
   slow.next = slow.next.next;
-  return head;
+  return dummy.next;
 };
 
 // Extra
@@ -394,7 +395,7 @@ let sawpNodeInPairs = (head) => {
 
   while (curr && curr.next) {
     let nextPair = curr.next.next;
-    second = curr.next;
+    let second = curr.next;
 
     second.next = curr;
     curr.next = nextPair;
@@ -431,7 +432,7 @@ let sortList = (head) => {
     let slow = h;
     let fast = h.next;
 
-    while (fast && fast.next) {
+    while (!fast && !fast.next) {
       fast = fast.next.next;
       slow = slow.next;
     }
