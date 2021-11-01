@@ -14,7 +14,7 @@ arr.join();
 const str = 'a';
 str.replace(string, stringWith);
 str.slice(beginIndex, endIndex);
-str.split();
+str.split('');
 Number('100');
 String(1);
 
